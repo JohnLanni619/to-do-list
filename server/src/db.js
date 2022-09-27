@@ -1,20 +1,17 @@
-import mongo from 'mongodb';
-const { MongoClient } = mongo;
+import mongoose from 'mongoose';
 
-const url = process.env.MONGO_URL;
-
-export const client = new MongoClient(url, { useNewUrlParser: true });
+const url = `mongodb+srv://johnlanni:bKMvK9LUpj6PbRHL@cluster0.e7sya0i.mongodb.net/to-do?retryWrites=true&w=majority`;
 
 export async function connectDb() {
     try {
-        await client.connect()
+        await mongoose.connect(url)
 
         // Confirm connection
-        await client.db("admin").command({ ping: 1 })
         console.log("🗃 Connected to DB Success");
+
     } catch (error) {
         console.error(error);
         // If there's an issue, close connection to db
-        await client.close()
+        await mongoose.connection.close()
     }
 }

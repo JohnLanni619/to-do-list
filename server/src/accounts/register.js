@@ -3,19 +3,21 @@ const { genSalt, hash } = bcrypt;
 
 export async function registerUser(email, password) {
     // dynamic import
-    const { user } = await import("../user/user.js")
+    const { User } = await import("../models/user.js")
     // generate the salt
     const salt = await genSalt(10);
     // hash with salt
     const hashedPassword = await hash(password, salt);
+
     // store in db
-    const result = await user.insertOne({
+    let user = await User.create({
         email: {
             address: email,
-            verfified: false
+            verified: false
         },
         password: hashedPassword
     })
+
     // return user from db
-    return result.insertedId
+    return user._id
 }

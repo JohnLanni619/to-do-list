@@ -20,7 +20,7 @@ const app = fastify();
 async function startApp() {
     try {
         app.register(fastifyCookie, {
-            secret: process.env.COOKIE_SIGNATURE
+            secret: 'kaskdl;asdpkokopqwdko;qwdkl;asd'
         })
 
         app.register(fastifyStatic, {
@@ -30,6 +30,7 @@ async function startApp() {
         app.post("/api/register", {}, async (request, reply) => {
             try {
                 const userId = await registerUser(request.body.email, request.body.password)
+
                 if (userId) {
                     await logUserIn(userId, request, reply)
                     reply.send({

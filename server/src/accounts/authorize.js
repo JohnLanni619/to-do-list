@@ -3,9 +3,9 @@ const { compare } = pkg;
 
 export async function authorizeUser(email, password) {
     // Import user collection
-    const { user } = await import("../user/user.js")
+    const { User } = await import("../models/user.js")
     // look up user
-    const userData = await user.findOne({
+    const userData = await User.findOne({
         'email.address': email
     })
 

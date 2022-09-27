@@ -1,15 +1,12 @@
-import mongo from 'mongodb'
 import jwt from "jsonwebtoken"
 import { createTokens } from './tokens.js'
 
-const { ObjectId } = mongo
-
-const JWTSignature = process.env.JWT_SIGNATURE
+const JWTSignature = 'masjdpcpjsioadyunasidonhas'
 
 export async function getUserFromCookies(request,reply) {
     try {
-        const { user } = await import("../user/user.js")
-        const { session } = await import("../session/session.js")
+        const { User } = await import("../models/user.js")
+        const { Session } = await import("../models/session.js")
         // Check to make sure access token exists
         if (request?.cookies?.accessToken) {
             // Check if user has an access token
@@ -17,8 +14,8 @@ export async function getUserFromCookies(request,reply) {
             // Decode access token
             const decodedAccessToken = jwt.verify(accessToken, JWTSignature)
             // Return user from record
-            return user.findOne({
-                _id: ObjectId(decodedAccessToken?.userId)
+            return User.findOne({
+                _id: decodedAccessToken?.userId
             })
         }
 
@@ -27,13 +24,13 @@ export async function getUserFromCookies(request,reply) {
             // Decode refresh token
             const { sessionToken } = jwt.verify(refreshToken,JWTSignature)
             // Look up session
-            const currentSession = await session.findOne({sessionToken})
+            const currentSession = await Session.findOne({sessionToken})
 
             // Confirm session is valid
             if (currentSession.valid) {
                 // Look up current user
-                const currentUser = await user.findOne({
-                    _id: ObjectId(currentSession.userId)
+                const currentUser = await User.findOne({
+                    _id: currentSession.userId
                 })
 
                 // refresh tokens

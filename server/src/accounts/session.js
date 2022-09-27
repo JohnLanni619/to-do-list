@@ -7,15 +7,14 @@ export async function createSession(userId, connection) {
         // Retrieve connection information
         const { ip, userAgent } = connection
         // insert into database
-        const { session } = await import("../session/session.js")
-        await session.insertOne({
+        const { Session } = await import("../models/session.js")
+
+        await Session.create({
             sessionToken,
-            userId,
+            userId: userId,
             valid: true,
             userAgent,
-            ip,
-            updatedAt: new Date(),
-            createdAt: new Date()
+            ip
         })
         // Return session token
         return sessionToken

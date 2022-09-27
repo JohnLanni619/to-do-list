@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-const JWTSignature = process.env.JWT_SIGNATURE
+const JWTSignature = 'masjdpcpjsioadyunasidonhas'
 
 export async function createTokens(sessionToken, userId) {
     try {
