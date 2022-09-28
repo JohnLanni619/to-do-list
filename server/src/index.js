@@ -17,6 +17,9 @@ const __dirname = path.dirname(__filename);
 
 const app = fastify();
 
+const buildPath = path.join(__dirname,'../../client/build')
+console.log(buildPath)
+
 async function startApp() {
     try {
         app.register(fastifyCookie, {
@@ -24,7 +27,7 @@ async function startApp() {
         })
 
         app.register(fastifyStatic, {
-            root: path.join(__dirname, "public")
+            root: buildPath
         })
 
         app.post("/api/register", {}, async (request, reply) => {
