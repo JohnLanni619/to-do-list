@@ -1,8 +1,12 @@
+import Nav from "./components/Nav";
+import './styles.css';
+
 function App() {
   return (
-    <div>
-        <h1>Hello To-Do </h1>
-    </div>
+    <>
+      <Nav />
+      <h1>Hello To-Do </h1>
+    </>
   );
 }
 

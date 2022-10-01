@@ -1,0 +1,89 @@
+:root {
+    --accent: steelblue
+}
+
+* {
+    box-sizing: border-box;
+}
+
+h1,h2,h3,h4,h5,h6, p {margin: 0;}
+
+.error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-block-start: 35vh ;
+}
+/* Login Page Styles */
+.background {
+    background-image: url('../public/pexels-johannes-plenio-1103970.jpg');
+    background-position: center;
+    background-size: cover;
+    min-height: 100vh;
+}
+.center {
+    display: flex;
+    justify-content: center;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    row-gap: 2rem;
+    margin-block-start: 4rem;
+    width: 400px;
+    height: 600px;
+    border-radius: 10px;
+    box-shadow: 0 0 3px black;
+    background-color: white;
+}
+
+.login-container h2 {
+    text-align: center;
+    margin-block-end: 2rem;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: .5rem;
+    position: relative;
+}
+
+.input-container input {
+    padding: .75rem;
+    padding-inline-start: 2.5rem;
+    border-block-start: none;
+    border-inline: none;
+}
+
+.login-container p {
+    margin-block-start: -30px;
+    margin-inline-start: auto;
+    font-size: .85rem;
+
+}
+
+.login-container button {
+    border: none;
+    color: white;
+    padding: 0.5em;
+    font-size: 1em;
+    border-radius: 100vh;
+    cursor: pointer;
+    background: rgb(190,196,186);
+    background: linear-gradient(90deg, rgba(190,196,186,1) 0%, rgba(6,57,149,1) 100%);
+}
+
+.login-container div:last-of-type {
+    text-align: center;
+    margin-block-start: auto;
+}
+
+.icon {
+    color: #777;
+    position: absolute;
+    top: 40px;
+    left: 4px;
+}
