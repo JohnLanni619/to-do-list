@@ -26,9 +26,9 @@ async function startApp() {
             secret: 'kaskdl;asdpkokopqwdko;qwdkl;asd'
         })
 
-        app.register(fastifyStatic, {
-            root: buildPath
-        })
+        // app.register(fastifyStatic, {
+        //     root: buildPath
+        // })
 
         app.post("/api/register", {}, async (request, reply) => {
             try {
@@ -116,8 +116,14 @@ async function startApp() {
             
         })
 
-        await app.listen({port: 3000})
-        console.log(`🚀 Server Listening at port 3000`)
+        app.get("/api/test", {}, async (request, reply) => {
+            reply.send({
+                data:'SUCCESS'
+            })
+        })
+
+        await app.listen({port: 3001})
+        console.log(`🚀 Server Listening at port 3001`)
     } catch (error) {
         console.error(error);
     }

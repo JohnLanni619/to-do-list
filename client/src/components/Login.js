@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export default function Login() {
     return (
         <div className="background">
-            <div className="center">
+            {/* <div className="center"> */}
                 <div className="login-container">
                     <h2>Login</h2>
                     <div className="input-container">
@@ -20,12 +20,12 @@ export default function Login() {
                     <p>Forgot Password?</p>
                     <button type="submit">LOGIN</button>
                     <div>
-                        <h5>Don't have an account?</h5>
-                        <Link to={'/signup'}>Click here to sign up</Link>
+                        <p>Don't have an account?</p>
+                        <p> Click <Link to='/signup'>Here</Link> to signup</p>
                     </div>
                     
                 </div>
-            </div>
+            {/* </div> */}
         </div>
     )
 }
