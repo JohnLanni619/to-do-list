@@ -11,12 +11,13 @@ export default function Test() {
     }
 
     fetchData()
+    console.log(data)
   }, [])
 
   if (data) {
     return (
       <>
-        <h1>{data.data}</h1>
+        <h1>{data?.data?.email?.address}</h1>
       </>
     )
   }

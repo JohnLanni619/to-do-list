@@ -1,5 +1,11 @@
 :root {
-    --accent: steelblue
+    --accent: steelblue;
+    --li-1-content: 'o';
+    --li-2-content: 'o';
+    --li-3-content: 'o';
+    --li-1-color: 'black';
+    --li-2-color: 'black';
+    --li-3-color: 'black';
 }
 
 * {
@@ -7,7 +13,15 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
-h1,h2,h3,h4,h5,h6, p {margin: 0;}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    margin: 0;
+}
 
 .center-grid {
     display: grid;
@@ -44,7 +58,8 @@ h1,h2,h3,h4,h5,h6, p {margin: 0;}
     background-color: white;
 }
 
-.login-container h2 {
+.login-container h2,
+#register-modal h2 {
     text-align: center;
     margin-block-end: 2rem;
 }
@@ -69,15 +84,16 @@ h1,h2,h3,h4,h5,h6, p {margin: 0;}
     font-size: .85rem;
 }
 
-.login-container button {
+.login-container button,
+.register-form button {
     border: none;
     color: white;
     padding: 0.5em;
     font-size: 1em;
     border-radius: 100vh;
     cursor: pointer;
-    background: rgb(190,196,186);
-    background: linear-gradient(90deg, rgba(190,196,186,1) 0%, rgba(6,57,149,1) 100%);
+    background: rgb(190, 196, 186);
+    background: linear-gradient(90deg, rgba(190, 196, 186, 1) 0%, rgba(6, 57, 149, 1) 100%);
 }
 
 .login-container div:last-of-type {
@@ -90,9 +106,69 @@ h1,h2,h3,h4,h5,h6, p {margin: 0;}
     color: inherit;
     font-weight: bolder;
 }
+
 .icon {
     color: #777;
     position: absolute;
     top: 40px;
     left: 4px;
+}
+
+.modal-link {
+    cursor: pointer;
+}
+
+#register-modal {
+    border-radius: 10px;
+    box-shadow: 0 0 3px black;
+    background-color: white;
+    border: none;
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 400px;
+    height: 600px;
+}
+
+.input-field {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    row-gap: .5rem;
+
+}
+
+.input-field input {
+    padding: .75rem;
+    padding-inline-start: 2.5rem;
+    border-block-start: none;
+    border-inline: none;
+}
+
+dialog::backdrop {
+    background-color: rgba(0,0,0,.7);
+}
+
+li {
+    list-style-type: circle;
+}
+
+.error-message {
+    color: darkred;
+    font-weight: bold;
+}
+
+.success {
+    position: absolute;
+    right: 6rem;
+    top: 2rem;
+    font-size: 1.5rem;
+    color: green;
+}
+
+.hidden {
+    display: none;
 }

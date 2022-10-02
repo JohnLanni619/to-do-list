@@ -18,7 +18,6 @@ const __dirname = path.dirname(__filename);
 const app = fastify();
 
 const buildPath = path.join(__dirname,'../../client/build')
-console.log(buildPath)
 
 async function startApp() {
     try {
@@ -30,8 +29,13 @@ async function startApp() {
         //     root: buildPath
         // })
 
+        app.register(fastifyStatic, {
+            root: path.join(__dirname, "public")
+        })
+
         app.post("/api/register", {}, async (request, reply) => {
             try {
+                console.log(request.body)
                 const userId = await registerUser(request.body.email, request.body.password)
 
                 if (userId) {
@@ -94,7 +98,7 @@ async function startApp() {
             }
         })
 
-        app.get("/test", {}, async (request, reply) => {
+        app.get("/api/test", {}, async (request, reply) => {
             try {
                 // Verify user login
                 const user = await getUserFromCookies(request,reply)
@@ -113,15 +117,7 @@ async function startApp() {
             } catch (error) {
                 throw new Error(error)
             }
-            
         })
-
-        app.get("/api/test", {}, async (request, reply) => {
-            reply.send({
-                data:'SUCCESS'
-            })
-        })
-
         await app.listen({port: 3001})
         console.log(`🚀 Server Listening at port 3001`)
     } catch (error) {
