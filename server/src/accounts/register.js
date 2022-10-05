@@ -18,8 +18,6 @@ export async function registerUser(email, password) {
         password: hashedPassword
     })
 
-    console.log(user)
-
     // return user from db
     return user._id
 }

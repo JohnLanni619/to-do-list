@@ -35,7 +35,6 @@ async function startApp() {
 
         app.post("/api/register", {}, async (request, reply) => {
             try {
-                console.log(request.body)
                 const userId = await registerUser(request.body.email, request.body.password)
 
                 if (userId) {
@@ -49,28 +48,23 @@ async function startApp() {
                 }
             } catch (error) {
                 console.error(error)
-                reply.send({
-                    data: {
-                        status: "FAILED",
-                        userId
-                    }
-                })
             }
         })
 
         app.post("/api/authorize", {}, async (request, reply) => {
             try {
                 const {isAuthorized, userId} = await authorizeUser(request.body.email, request.body.password)
+
                 if (isAuthorized) {
                     await logUserIn(userId, request, reply)
-                    reply.send({
+                    reply.redirect('/').send({
                         data: {
                             status: "SUCCESS",
                             userId
                         }
                     })
                 } else {
-                    reply.send({
+                    reply.code(400).send({
                         data: "Auth Failed"
                     })
                 }
@@ -98,7 +92,7 @@ async function startApp() {
             }
         })
 
-        app.get("/api/test", {}, async (request, reply) => {
+        app.get("/api/getuser", {}, async (request, reply) => {
             try {
                 // Verify user login
                 const user = await getUserFromCookies(request,reply)
@@ -109,7 +103,7 @@ async function startApp() {
                         data: user
                     })
                 } else {
-                    reply.send({
+                    reply.code(400).send({
                         data: 'Failed User Lookup'
                     })
                 }
@@ -118,6 +112,7 @@ async function startApp() {
                 throw new Error(error)
             }
         })
+
         await app.listen({port: 3001})
         console.log(`🚀 Server Listening at port 3001`)
     } catch (error) {

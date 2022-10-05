@@ -11,7 +11,6 @@ export default function Test() {
     }
 
     fetchData()
-    console.log(data)
   }, [])
 
   if (data) {

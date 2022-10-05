@@ -3,13 +3,12 @@ import ReactDOM from 'react-dom/client';
 import {
   createBrowserRouter,
   RouterProvider,
-  Route,
 } from "react-router-dom";
 import './index.css';
 import App from './pages/App';
 import Test from './pages/Test';
 import ErrorPage from './components/Error';
-import Login from './components/Login';
+import Login from './pages/Login';
 
 const router = createBrowserRouter([
   {
@@ -31,5 +30,5 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <RouterProvider router={router} errorElement={'<h1>Error</h1>'} />
+  <RouterProvider router={router} />
 );

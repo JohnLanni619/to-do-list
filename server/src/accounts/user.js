@@ -8,8 +8,10 @@ export async function getUserFromCookies(request,reply) {
         const { User } = await import("../models/user.js")
         const { Session } = await import("../models/session.js")
         // Check to make sure access token exists
+        // If access token exists, run this if statement and return the user
         if (request?.cookies?.accessToken) {
             // Check if user has an access token
+
             const { accessToken } = request.cookies
             // Decode access token
             const decodedAccessToken = jwt.verify(accessToken, JWTSignature)
@@ -19,6 +21,7 @@ export async function getUserFromCookies(request,reply) {
             })
         }
 
+        // If access token does NOT exist, but refreshToken does, run this code block
         if (request?.cookies?.refreshToken) {
             const { refreshToken } = request.cookies
             // Decode refresh token

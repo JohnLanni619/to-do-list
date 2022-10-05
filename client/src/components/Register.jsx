@@ -64,7 +64,7 @@ export default function Register () {
 
         console.log('values',values)
 
-        const res = await fetch('/api/register', {
+        await fetch('/api/register', {
             method: "POST",
             body: JSON.stringify(values),
             headers: { "Content-type": "application/json; charset=UTF-8"}
@@ -79,7 +79,8 @@ export default function Register () {
   }
 
   function validateEmail (e) {
-    const format = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+    // const format = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+    const format = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
     const success = document.querySelectorAll('.success')
     const errorMessage = document.getElementById('email-error')
 
