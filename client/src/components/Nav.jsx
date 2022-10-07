@@ -36,16 +36,18 @@ export default function Nav() {
     }
 
     return (
-        <div>
-            <h1>Logo</h1>
-            <nav>
-                <Link to='/'>Home</Link>
-                <Link to='/profile'>Profile</Link>
-                {userStatus===true ? 
-                <button onClick={logout}>Logout</button> : 
-                <button onClick={ () => window.location.replace('/login')}>Login</button>
-                }
-            </nav>
+        <div className="nav-background">
+            <div className="nav-container">
+                <h1>To Do List</h1>
+                <nav>
+                    <Link to='/'>Home</Link>
+                    <Link to='/profile'>Profile</Link>
+                    {userStatus===true ?
+                    <button onClick={logout}>Logout</button> :
+                    <button onClick={ () => window.location.replace('/login')}>Login</button>
+                    }
+                </nav>
+            </div>
         </div>
     )
 }

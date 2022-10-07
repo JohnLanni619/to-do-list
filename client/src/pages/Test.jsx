@@ -2,22 +2,43 @@ import { useState, useEffect } from "react"
 
 export default function Test() {
   const [data, setData] = useState(null)
+  const [input, setInput] = useState('')
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(`/api/test`)
-      const newData = await response.json()
-      setData(newData)
+  async function handleSubmit(event) {
+    event.preventDefault();
+
+    const path = '/api/category'
+
+    const data = {
+      userInput: input
     }
 
-    fetchData()
-  }, [])
+    const response = await fetch(path, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    const newData = await response.json()
+    alert(`Submitting ${data.userInput} to ${path}`)
 
-  if (data) {
+    setData(newData)
+    console.log(input)
+  }
+
+  function handleChange(e) {
+    setInput(e.target.value)
+  }
     return (
       <>
-        <h1>{data?.data?.email?.address}</h1>
+        <div className="test-container">
+          <form id="test">
+            <label htmlFor="test">Enter in text: </label>
+            <input name='test' type="text" onChange={event => handleChange(event)} />
+            <button onClick={event => handleSubmit(event)}>Submit</button>
+          </form>
+        </div>
       </>
     )
-  }
 }

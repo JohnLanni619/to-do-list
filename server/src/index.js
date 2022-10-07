@@ -10,6 +10,7 @@ import { authorizeUser } from './accounts/authorize.js';
 import { logUserIn } from './accounts/loguserin.js';
 import { logUserOut } from './accounts/loguserout.js';
 import { getUserFromCookies } from './accounts/user.js';
+import { createCategory } from './categories/createcategory.js';
 
 // ESM specific features
 const __filename = fileURLToPath(import.meta.url);
@@ -110,6 +111,34 @@ async function startApp() {
                     
             } catch (error) {
                 throw new Error(error)
+            }
+        })
+
+        app.post("/api/category", {}, async (request, reply) => {
+            try {
+                // Get Category name from user input
+                const userInput = request.body.userInput
+                
+                // Get user ID from cookies
+                const user = await getUserFromCookies(request,reply)
+                const userId = user._id;
+
+                const values = {
+                    userId,
+                    userInput
+                }
+                
+                if (userInput && userId) {
+                    const createdCategory = await createCategory(values)
+                    
+                    reply.send({
+                        values,
+                        createdCategory
+                    })
+                }
+
+            } catch (error) {
+                console.error(error)
             }
         })
 
