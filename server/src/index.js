@@ -114,6 +114,29 @@ async function startApp() {
             }
         })
 
+        app.get("/api/getcategories", {}, async (request, reply) => {
+            try {
+                // get userId from cookies
+                const user = await getUserFromCookies(request,reply)
+
+                const categories = user.categories;
+                console.log(categories)
+
+                if (categories) {
+                    reply.send({
+                        data: categories
+                    })
+                } else {
+                    reply.send({
+                        data: 'No Categories Found'
+                    })
+                }
+                // find user by id, and return users categories
+            } catch (error) {
+                console.error(error)
+            }
+        })
+
         app.post("/api/category", {}, async (request, reply) => {
             try {
                 // Get Category name from user input
@@ -127,13 +150,14 @@ async function startApp() {
                     userId,
                     userInput
                 }
+                console.log(values)
                 
                 if (userInput && userId) {
                     const createdCategory = await createCategory(values)
                     
                     reply.send({
-                        values,
-                        createdCategory
+                        _id: createdCategory,
+                        categoryName: values.userInput
                     })
                 }
 

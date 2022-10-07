@@ -13,13 +13,15 @@ export async function createCategory({userId, userInput}) {
         const { User } = await import("../models/user.js")
 
         const filter = { _id: userId};
-        const update = { categories: category._id };
+        const update = { $push: { categories: category._id } };
 
-        let updatedUserCategory = await User.findOneAndUpdate(filter, update, {
+        // Update user category array with newly created category
+        await User.findOneAndUpdate(filter, update, {
             new: true
         })
-        
-        return updatedUserCategory;
+
+        // Return id of newly created category
+        return category._id;
     }
 
     // return id of updated category

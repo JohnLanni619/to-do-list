@@ -7,6 +7,8 @@ export async function getUserFromCookies(request,reply) {
     try {
         const { User } = await import("../models/user.js")
         const { Session } = await import("../models/session.js")
+        // Category model needs to be included here for populate method to work
+        const { Category } = await import("../models/category.js")
         // Check to make sure access token exists
         // If access token exists, run this if statement and return the user
         if (request?.cookies?.accessToken) {
@@ -18,7 +20,7 @@ export async function getUserFromCookies(request,reply) {
             // Return user from record
             return User.findOne({
                 _id: decodedAccessToken?.userId
-            })
+            }).populate('categories')
         }
 
         // If access token does NOT exist, but refreshToken does, run this code block

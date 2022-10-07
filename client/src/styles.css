@@ -213,6 +213,7 @@ li {
     border-radius: .3em;
     box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1);
     height: min-content;
+    position: relative;
 }
 
 .column h2 {
@@ -225,6 +226,23 @@ li {
 .column p {
     margin: 0.5rem;
     padding: 0.5rem;
+}
+
+.delete-button {
+    position: absolute;
+    position: absolute;
+    right: 0;
+    margin: .25rem;
+    background-color: inherit;
+    border: none;
+    cursor: pointer;
+}
+
+.delete-icon {
+    pointer-events: none;
+    cursor: pointer;
+    color: red;
+    font-size: 1.25rem;
 }
 
 .quote span {
