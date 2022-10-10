@@ -112,15 +112,17 @@ nav>*:hover {
 }
 
 .login-container button,
-.register-form button {
+.register-form button,
+.add-form button,
+.form-container button {
     border: none;
     color: white;
-    padding: 0.5em;
+    padding: .5em 1em;
     font-size: 1em;
     border-radius: 100vh;
     cursor: pointer;
-    background: rgb(190, 196, 186);
-    background: linear-gradient(90deg, rgba(190, 196, 186, 1) 0%, rgba(6, 57, 149, 1) 100%);
+    background: rgba(6, 57, 149, 1)
+    /* background: linear-gradient(90deg, rgba(190, 196, 186, 1) 0%, rgba(6, 57, 149, 1) 100%); */
 }
 
 .login-container div:last-of-type {
@@ -197,7 +199,17 @@ li {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
+}
+
+.form-container {
+    margin: 1rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.content-container h1 {
+    margin: 1rem;
 }
 
 .container {
@@ -245,20 +257,10 @@ li {
     font-size: 1.25rem;
 }
 
-.quote span {
-    font-weight: bold;
-    position: relative;
-    margin-left: 15px;
-}
-
-.quote span::before {
-    content: '';
-    position: absolute;
-    height: 1px;
-    width: 10px;
-    border-bottom: 1px solid black;
-    top: 10px;
-    left: -15px;
+.add-form {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
 }
 
 .test-container {

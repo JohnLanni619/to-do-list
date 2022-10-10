@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 
 export default function Test() {
+  // eslint-disable-next-line
   const [data, setData] = useState(null)
   const [input, setInput] = useState('')
 
@@ -26,6 +27,13 @@ export default function Test() {
     setData(newData)
     console.log(input)
   }
+  const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+  const filtered = array.filter(function(value, index, arr) {
+    if (value != 1) {
+      return value
+    }
+  })
+  console.log(filtered)
 
   function handleChange(e) {
     setInput(e.target.value)

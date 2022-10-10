@@ -11,6 +11,7 @@ import { logUserIn } from './accounts/loguserin.js';
 import { logUserOut } from './accounts/loguserout.js';
 import { getUserFromCookies } from './accounts/user.js';
 import { createCategory } from './categories/createcategory.js';
+import { deleteCategory } from './categories/deletecategory.js';
 
 // ESM specific features
 const __filename = fileURLToPath(import.meta.url);
@@ -120,7 +121,6 @@ async function startApp() {
                 const user = await getUserFromCookies(request,reply)
 
                 const categories = user.categories;
-                console.log(categories)
 
                 if (categories) {
                     reply.send({
@@ -150,7 +150,6 @@ async function startApp() {
                     userId,
                     userInput
                 }
-                console.log(values)
                 
                 if (userInput && userId) {
                     const createdCategory = await createCategory(values)
@@ -161,6 +160,27 @@ async function startApp() {
                     })
                 }
 
+            } catch (error) {
+                console.error(error)
+            }
+        })
+
+        app.delete("/api/deletecategory", {}, async (request, reply) => {
+            try {
+                const user = await getUserFromCookies(request,reply)
+                const userId = user._id;
+
+                const values = {
+                    userId,
+                    categoryId: request.body.categoryId
+                }
+
+                const operation = await deleteCategory(values)
+
+                reply.send({
+                    categoryId: operation,
+                    status: `Category with id of ${operation} has been deleted successfully!`
+                })
             } catch (error) {
                 console.error(error)
             }
