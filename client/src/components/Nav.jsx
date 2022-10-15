@@ -40,7 +40,7 @@ export default function Nav() {
             <div className="nav-container">
                 <h1>To Do List</h1>
                 <nav>
-                    <Link to='/'>Home</Link>
+                    <Link to='/home'>Home</Link>
                     <Link to='/profile'>Profile</Link>
                     {userStatus===true ?
                     <button onClick={logout}>Logout</button> :

@@ -47,7 +47,7 @@ export default function Login() {
             
             // If user is logged in, redirect them to the home page
             if (data?.data?.email) {
-                window.location.replace('/')
+                window.location.replace('/home')
             }
         }
 
