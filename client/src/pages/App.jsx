@@ -7,10 +7,11 @@ import '../styles.css'
 // I want it to save the category to the database and then I want the category component to re-render
 
 function App () {
+
   useEffect( () => {
         
     // Check if user is logged in.
-    async function getUser() {
+    /* async function getUser() {
         const response = await fetch('/api/test')
         const data = await response.json();
         
@@ -20,7 +21,7 @@ function App () {
         }
     }
 
-    // getUser();
+    getUser(); */
 })
   return (
     <>

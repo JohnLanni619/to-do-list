@@ -1,11 +1,18 @@
 import { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import {
+  faXmark,
+  faClipboardList,
+  faTimesCircle
+} from '@fortawesome/free-solid-svg-icons'
+import Notification from './Notification/Notification'
 
 export default function Category () {
   const [userCategories, setUserCategories] = useState([])
   const [userInput, setUserInput] = useState('')
-  const [buttonText, setButtonText] = useState('Add Category')
+  const [errorText, setErrorText] = useState('')
+  const [notificationTitle, setNotificationTitle] = useState('')
+  const [notificationContent, setNotificationContent] = useState('')
 
   useEffect(() => {
     // get userID from cookies
@@ -18,6 +25,26 @@ export default function Category () {
     getCategories()
   }, [userCategories.length])
 
+  function sendNotification (title, content) {
+    setNotificationTitle(title)
+    setNotificationContent(content)
+
+    const notificationCard = document.getElementById('notification-card')
+    notificationCard.style.marginLeft = '6rem'
+
+    let timer
+
+    const startTimer = function () {
+      clearTimeout(timer)
+      timer = setTimeout(
+        () => (notificationCard.style.marginLeft = '-1000px'),
+        4000
+      )
+    }
+
+    startTimer()
+  }
+
   // create function that takes previous array and adds object at the end
   function setArray (prevArray, object) {
     return [...prevArray, object]
@@ -26,30 +53,52 @@ export default function Category () {
   async function handleSubmit (e) {
     e.preventDefault()
 
+    setErrorText('');
+
     const data = {
       userInput
     }
 
-    const response = await fetch('/api/category', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
+    if (userInput.length > 0) {
+      const response = await fetch('/api/category', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+  
+      const newData = await response.json()
+  
+      // pushing new category to userCategories to trigger component rerender
+      setUserCategories(setArray(userCategories, newData))
+  
+      // Clear input field
+      const categoryInput = document.getElementById('category-input')
+      categoryInput.value = ''
+      // Close modal
+      const modal = document.getElementById('add-form')
+      modal.close()
+      setUserInput('')
+    } else {
+      setErrorText('Input field cannot be empty')
 
-    const newData = await response.json()
+      let timer
 
-    // pushing new category to userCategories to trigger component rerender
-    setUserCategories(setArray(userCategories, newData))
+      const startTimer = function () {
+        clearTimeout(timer)
+        timer = setTimeout(
+          () => (setErrorText('')),
+          4000
+        )
+      }
 
-    // Clear input field
-    const categoryInput = document.getElementById('category-input')
-    categoryInput.value = ''
+      startTimer()
+    }
   }
 
-  async function handleDelete(e) {
-    e.preventDefault();
+  async function handleDelete (e) {
+    e.preventDefault()
     // get category id
     const categoryId = e.target.getAttribute('data-key')
 
@@ -68,53 +117,77 @@ export default function Category () {
 
     const newData = await response.json()
 
-    const filtered = userCategories.filter(function(value, index, arr) {
-      if (value._id != newData.categoryId) {
+    const filtered = userCategories.filter(function (value, index, arr) {
+      if (value._id !== newData.categoryId) {
         return value
       }
     })
 
     setUserCategories(filtered)
 
-    alert(newData.status)
-
+    sendNotification(newData.title, newData.body)
   }
 
-  function toggleAddForm() {
-    const addForm = document.getElementById('add-form')
-    addForm.classList.toggle('hidden')
-
-    if (addForm.classList.contains('hidden')) {
-      setButtonText('Add Category')
-    } else {
-      setButtonText('-')
-    }
-
+  function showModal () {
+    const modal = document.getElementById('add-form')
+    modal.showModal()
   }
 
-  if (userCategories.length > 0) {
-    return (
+  return (
+    <>
       <div className='content-container'>
-        <div className='form-container'>
-          <button onClick={toggleAddForm}>{buttonText}</button>
-          <form id='add-form' className='add-form hidden'>
-            <label htmlFor='category'>Please Enter Category Name:</label>
-            <input
-              id='category-input'
-              type='text'
-              onChange={e => setUserInput(e.target.value)}
-            />
-            <button type='submit' onClick={e => handleSubmit(e)}>
-              Submit
-            </button>
+        {userCategories.length === 0 && (
+          <h1>Click Add Category button to get started!</h1>
+        )}
+        <button className='category-button' onClick={showModal}>
+          Add Category
+        </button>
+        <dialog id='add-form'>
+          <button
+            className='modal-close-button'
+            onClick={() => {
+              const modal = document.getElementById('add-form')
+              modal.close()
+            }}
+          >
+            <FontAwesomeIcon icon={faTimesCircle} />
+          </button>
+          <form className='add-form'>
+            <div>
+              <FontAwesomeIcon className='modal-icon' icon={faClipboardList} />
+              <h2>New Category</h2>
+            </div>
+            <div>
+              <label htmlFor='category'>Category Name </label>
+              <input
+                id='category-input'
+                type='text'
+                onChange={e => setUserInput(e.target.value)}
+              />
+            </div>
+            <p className='modal-error-message'>{errorText}</p>
+            <div>
+              <button
+                className='add-button'
+                type='submit'
+                onClick={e => handleSubmit(e)}
+              >
+                Submit
+              </button>
+            </div>
           </form>
-        </div>
+        </dialog>
         <section className='container'>
           {userCategories.map(category => {
             return (
               <div className='column' key={category._id}>
-                <button className='delete-button' type='submit' onClick={ e => handleDelete(e) } data-key={category._id}>
-                <FontAwesomeIcon className='delete-icon' icon={faXmark} />
+                <button
+                  className='delete-button'
+                  type='submit'
+                  onClick={e => handleDelete(e)}
+                  data-key={category._id}
+                >
+                  <FontAwesomeIcon className='delete-icon' icon={faXmark} />
                 </button>
                 <h2>{category.categoryName}</h2>
                 <p>{category._id}</p>
@@ -123,27 +196,7 @@ export default function Category () {
           })}
         </section>
       </div>
-    )
-  } else {
-    return (
-      <div className='content-container'>
-        <h1>Click Add Category button to get started!</h1>
-
-        <div className='form-container'>
-          <button onClick={toggleAddForm}>{buttonText}</button>
-          <form id='add-form' className='add-form hidden'>
-            <label htmlFor='category'>Please Enter Category Name:</label>
-            <input
-              id='category-input'
-              type='text'
-              onChange={e => setUserInput(e.target.value)}
-            />
-            <button type='submit' onClick={e => handleSubmit(e)}>
-              Submit
-            </button>
-          </form>
-        </div>
-      </div>
-    )
-  }
+      <Notification title={notificationTitle} content={notificationContent} />
+    </>
+  )
 }

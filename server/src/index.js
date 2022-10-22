@@ -179,7 +179,8 @@ async function startApp() {
 
                 reply.send({
                     categoryId: operation,
-                    status: `Category with id of ${operation} has been deleted successfully!`
+                    title: 'Success!',
+                    body: `Category with id of ${operation} has been deleted!`
                 })
             } catch (error) {
                 console.error(error)

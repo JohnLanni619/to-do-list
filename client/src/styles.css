@@ -1,8 +1,4 @@
-:root {
-    --accent: steelblue;
-    --nav-border: 3px solid white;
-    --primary: rgb(6, 57, 85);
-}
+@import './vars.css';
 
 * {
     box-sizing: border-box;
@@ -113,8 +109,9 @@ nav>*:hover {
 
 .login-container button,
 .register-form button,
-.add-form button,
-.form-container button {
+.category-button,
+.form-container button,
+.add-button {
     border: none;
     color: white;
     padding: .5em 1em;
@@ -177,6 +174,12 @@ nav>*:hover {
     border-inline: none;
 }
 
+.modal-error-message {
+    color: #cc0000;
+    position: absolute;
+    bottom: 60px;
+}
+
 dialog::backdrop {
     background-color: rgba(0, 0, 0, .7);
 }
@@ -202,10 +205,11 @@ li {
     display: none !important;
 }
 
-.form-container {
+.content-container {
     margin: 1rem;
     display: flex;
-    gap: 1rem;
+    flex-direction: column;
+    align-items: center;
 }
 
 .content-container h1 {
@@ -240,6 +244,57 @@ li {
     padding: 0.5rem;
 }
 
+dialog {
+    border: none;
+    padding: 0;
+}
+
+.modal-close-button {
+    border: none;
+    background: transparent;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    cursor: pointer;
+}
+
+.modal-close-button > * {
+    color: #777;
+    font-size: larger;
+    pointer-events: none;
+}
+
+.add-form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 1.25rem;
+}
+
+.add-form > * {
+    padding: 1rem 2rem;
+}
+
+.add-form > div:first-of-type {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+}
+
+.add-form input {
+    padding: 4px;
+}
+
+.add-form > div:last-of-type {
+    background-color: #1112;
+    width: 100%;
+}
+
+.modal-icon {
+    font-size: 2rem;
+    color: var(--secondary);
+}
+
 .delete-button {
     position: absolute;
     position: absolute;
@@ -253,14 +308,8 @@ li {
 .delete-icon {
     pointer-events: none;
     cursor: pointer;
-    color: red;
+    color: #cc0000;
     font-size: 1.25rem;
-}
-
-.add-form {
-    display: flex;
-    gap: .5rem;
-    align-items: center;
 }
 
 .test-container {
