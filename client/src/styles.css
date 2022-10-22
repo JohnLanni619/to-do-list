@@ -244,6 +244,12 @@ li {
     padding: 0.5rem;
 }
 
+.task-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 dialog {
     border: none;
     padding: 0;

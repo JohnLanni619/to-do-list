@@ -1,0 +1,10 @@
+@import '../../vars.css';
+
+.task {
+    border-bottom: 3px solid var(--primary);
+    width: min(90%, 45ch);
+}
+
+.task:last-child {
+    border: none;
+}

@@ -6,6 +6,7 @@ import {
   faTimesCircle
 } from '@fortawesome/free-solid-svg-icons'
 import Notification from './Notification/Notification'
+import Task from './Task/Task'
 
 export default function Category () {
   const [userCategories, setUserCategories] = useState([])
@@ -190,7 +191,12 @@ export default function Category () {
                   <FontAwesomeIcon className='delete-icon' icon={faXmark} />
                 </button>
                 <h2>{category.categoryName}</h2>
-                <p>{category._id}</p>
+                <div className="task-container">
+                  <Task />
+                  <Task />
+                  <Task />
+                  <Task />
+                </div>
               </div>
             )
           })}
