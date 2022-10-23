@@ -12,6 +12,7 @@ import { logUserOut } from './accounts/loguserout.js';
 import { getUserFromCookies } from './accounts/user.js';
 import { createCategory } from './categories/createcategory.js';
 import { deleteCategory } from './categories/deletecategory.js';
+import { createTask } from './tasks/createtask.js';
 
 // ESM specific features
 const __filename = fileURLToPath(import.meta.url);
@@ -131,7 +132,7 @@ async function startApp() {
                         data: 'No Categories Found'
                     })
                 }
-                // find user by id, and return users categories
+
             } catch (error) {
                 console.error(error)
             }
@@ -158,6 +159,26 @@ async function startApp() {
                         _id: createdCategory,
                         categoryName: values.userInput
                     })
+                }
+
+            } catch (error) {
+                console.error(error)
+            }
+        })
+
+        app.post("/api/createtask", {}, async (request, reply) => {
+            try {
+                // Get Category id and task content from user input
+                const categoryId = request.body.categoryId;
+                const taskContent = request.body.taskContent;
+                
+                if (categoryId && taskContent) {
+                    const createdTask = await createTask(categoryId, taskContent)
+                    
+                    reply.send({
+                        taskId: createdTask
+                    })
+
                 }
 
             } catch (error) {

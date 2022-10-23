@@ -6,6 +6,10 @@ const categorySchema = new mongoose.Schema({
     },
     // All categories will belong to the user who created it
     userId: {type: mongoose.SchemaTypes.ObjectId, ref: 'User'},
+    tasks: [{
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'Task'
+    }],
     updatedAt: { type: Date, default: Date.now },
     createdAt: { type: Date, default: Date.now }
 })

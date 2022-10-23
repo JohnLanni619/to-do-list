@@ -1,10 +1,18 @@
 @import '../../vars.css';
 
 .task {
-    border-bottom: 3px solid var(--primary);
-    width: min(90%, 45ch);
+    width: min(90%, 60ch);
+    box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.75);
 }
 
-.task:last-child {
-    border: none;
+.task ~hr {
+    background: var(--secondary);
+    width: 100%;
+    height: 3px;
+}
+
+.task:last-of-type ~hr {
+    display: none;
 }

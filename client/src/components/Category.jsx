@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faXmark,
   faClipboardList,
-  faTimesCircle
+  faTimesCircle,
+  faCheck,  
+  faPlus
 } from '@fortawesome/free-solid-svg-icons'
 import Notification from './Notification/Notification'
 import Task from './Task/Task'
@@ -14,6 +16,8 @@ export default function Category () {
   const [errorText, setErrorText] = useState('')
   const [notificationTitle, setNotificationTitle] = useState('')
   const [notificationContent, setNotificationContent] = useState('')
+  const [categoryId, setCategoryId] = useState('');
+  const taskInput = useRef();
 
   useEffect(() => {
     // get userID from cookies
@@ -24,6 +28,7 @@ export default function Category () {
       setUserCategories(data.data)
     }
     getCategories()
+
   }, [userCategories.length])
 
   function sendNotification (title, content) {
@@ -51,10 +56,10 @@ export default function Category () {
     return [...prevArray, object]
   }
 
-  async function handleSubmit (e) {
+  async function handleCategorySubmit (e) {
     e.preventDefault()
 
-    setErrorText('');
+    setErrorText('')
 
     const data = {
       userInput
@@ -68,12 +73,12 @@ export default function Category () {
         },
         body: JSON.stringify(data)
       })
-  
+
       const newData = await response.json()
-  
+
       // pushing new category to userCategories to trigger component rerender
       setUserCategories(setArray(userCategories, newData))
-  
+
       // Clear input field
       const categoryInput = document.getElementById('category-input')
       categoryInput.value = ''
@@ -88,14 +93,43 @@ export default function Category () {
 
       const startTimer = function () {
         clearTimeout(timer)
-        timer = setTimeout(
-          () => (setErrorText('')),
-          4000
-        )
+        timer = setTimeout(() => setErrorText(''), 4000)
       }
 
       startTimer()
     }
+  }
+
+  async function handleTaskSubmit (e) {
+    e.preventDefault()
+
+    const taskContent = taskInput.current.value;
+    const categoryId = e.target.getAttribute('data-attr-cid')
+
+    const post_data = {
+      taskContent,
+      categoryId
+    }
+
+    const response = await fetch('/api/createtask', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(post_data)
+    })
+
+    const responseData = await response.json();
+    const { taskId } = responseData;
+    
+    // Pushing dummy to userCategories to change length and trigger a re-render
+    setUserCategories(setArray(userCategories, 're-render'))
+
+    // Clear form and close modal on submit
+    taskInput.current.value = '';
+    const modal = document.getElementById('add-task')
+    modal.close()
+
   }
 
   async function handleDelete (e) {
@@ -171,7 +205,7 @@ export default function Category () {
               <button
                 className='add-button'
                 type='submit'
-                onClick={e => handleSubmit(e)}
+                onClick={e => handleCategorySubmit(e)}
               >
                 Submit
               </button>
@@ -179,6 +213,45 @@ export default function Category () {
           </form>
         </dialog>
         <section className='container'>
+          <dialog id='add-task'>
+            <button
+              className='modal-close-button'
+              onClick={() => {
+                const modal = document.getElementById('add-task')
+                modal.close()
+              }}
+            >
+              <FontAwesomeIcon icon={faTimesCircle} />
+            </button>
+            <form className='add-task-form'>
+              <div>
+                <FontAwesomeIcon className='modal-icon' icon={faCheck} />
+                <h2>New Task</h2>
+              </div>
+              <div>
+                <textarea
+                  name='task'
+                  id='task-input'
+                  placeholder='enter task information here'
+                  ref={taskInput}
+                  cols='40'
+                  rows='5'
+                ></textarea>
+              </div>
+              <p className='modal-error-message'>{errorText}</p>
+              <div>
+                <button
+                  className='add-button'
+                  type='submit'
+                  data-attr-cid={categoryId}
+                  data-attr-index={'hi'}
+                  onClick={e => handleTaskSubmit(e)}
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </dialog>
           {userCategories.map(category => {
             return (
               <div className='column' key={category._id}>
@@ -190,12 +263,23 @@ export default function Category () {
                 >
                   <FontAwesomeIcon className='delete-icon' icon={faXmark} />
                 </button>
-                <h2>{category.categoryName}</h2>
-                <div className="task-container">
-                  <Task />
-                  <Task />
-                  <Task />
-                  <Task />
+                <div>
+                  <h2>{category.categoryName}</h2>
+                </div>
+                <button
+                    className=' /*task-button*/ add-task-button'
+                    data-attr-cid={category._id}
+                    onClick={(e) => {
+                      taskInput.current.value='';
+                      const modal = document.getElementById('add-task')
+                      modal.showModal()
+                      setCategoryId(e.target.getAttribute('data-attr-cid'))
+                  }}
+                >
+                  <FontAwesomeIcon icon={faPlus} />
+                </button>
+                <div className='task-container'>
+                  {category.tasks?.length > 0 ? <Task taskData={category?.tasks}/> : <h3>Click on plus button to add a task!</h3>}
                 </div>
               </div>
             )

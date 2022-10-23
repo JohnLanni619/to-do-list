@@ -1,10 +1,23 @@
 import styles from './Task.module.css';
 
-export default function Task() {
+const taskData = [
+    {taskContent: 'test'},
+    {taskContent: 'test again'}
+]
+
+export default function Task({taskData}) {
     return (
-        <p className={styles.task}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse, cupiditate ipsam reprehenderit, 
-            nemo molestias odit placeat nostrum delectus libero, odio ut sed recusandae culpa tempore explicabo. Rem harum beatae illum?
-        </p>
+        <>
+            {taskData.map(task => {
+                return (
+                    <>
+                    <p key={task._id} className={styles.task}>{task.taskContent}</p>
+                    <hr />
+                    </>
+                    
+                )
+            })} 
+        </>
     )
+
 }
