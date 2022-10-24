@@ -11,8 +11,8 @@ export default function Task({taskData}) {
             {taskData.map(task => {
                 return (
                     <>
-                    <p key={task._id} className={styles.task}>{task.taskContent}</p>
-                    <hr />
+                        <p key={task._id} className={styles.task}>{task.taskContent}</p>
+                        <hr />
                     </>
                     
                 )

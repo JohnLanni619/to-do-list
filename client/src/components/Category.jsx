@@ -17,9 +17,11 @@ export default function Category () {
   const [notificationTitle, setNotificationTitle] = useState('')
   const [notificationContent, setNotificationContent] = useState('')
   const [categoryId, setCategoryId] = useState('');
+  const [updateCategory, setUpdateCategory] = useState('')
   const taskInput = useRef();
 
   useEffect(() => {
+    console.log('useEffect is firing')
     // get userID from cookies
     async function getCategories () {
       const res = await fetch('/api/getcategories')
@@ -29,7 +31,7 @@ export default function Category () {
     }
     getCategories()
 
-  }, [userCategories.length])
+  }, [updateCategory])
 
   function sendNotification (title, content) {
     setNotificationTitle(title)
@@ -49,11 +51,6 @@ export default function Category () {
     }
 
     startTimer()
-  }
-
-  // create function that takes previous array and adds object at the end
-  function setArray (prevArray, object) {
-    return [...prevArray, object]
   }
 
   async function handleCategorySubmit (e) {
@@ -76,8 +73,12 @@ export default function Category () {
 
       const newData = await response.json()
 
-      // pushing new category to userCategories to trigger component rerender
-      setUserCategories(setArray(userCategories, newData))
+      // Updating state variable to trigger re-render of Category component
+      if (updateCategory === 'true') {
+        setUpdateCategory('very true')
+      } else {
+        setUpdateCategory('true')
+      }
 
       // Clear input field
       const categoryInput = document.getElementById('category-input')
@@ -120,10 +121,13 @@ export default function Category () {
     })
 
     const responseData = await response.json();
-    const { taskId } = responseData;
-    
-    // Pushing dummy to userCategories to change length and trigger a re-render
-    setUserCategories(setArray(userCategories, 're-render'))
+
+    // Changing state variable to trigger re-render of Category component
+    if (updateCategory === 'true') {
+      setUpdateCategory('very true')
+    } else {
+      setUpdateCategory('true')
+    }
 
     // Clear form and close modal on submit
     taskInput.current.value = '';
@@ -152,13 +156,12 @@ export default function Category () {
 
     const newData = await response.json()
 
-    const filtered = userCategories.filter(function (value, index, arr) {
-      if (value._id !== newData.categoryId) {
-        return value
-      }
-    })
-
-    setUserCategories(filtered)
+    // setUserCategories(filtered)
+    if (updateCategory === 'true') {
+      setUpdateCategory('very true')
+    } else {
+      setUpdateCategory('true')
+    }
 
     sendNotification(newData.title, newData.body)
   }
