@@ -13,6 +13,7 @@ import { getUserFromCookies } from './accounts/user.js';
 import { createCategory } from './categories/createcategory.js';
 import { deleteCategory } from './categories/deletecategory.js';
 import { createTask } from './tasks/createtask.js';
+import { updateTask } from './tasks/updatetask.js';
 
 // ESM specific features
 const __filename = fileURLToPath(import.meta.url);
@@ -171,8 +172,10 @@ async function startApp() {
                 // Get Category id and task content from user input
                 const categoryId = request.body.categoryId;
                 const taskContent = request.body.taskContent;
+
+                console.log(categoryId, taskContent)
                 
-                if (categoryId && taskContent) {
+                if (categoryId != null && taskContent != null) {
                     const createdTask = await createTask(categoryId, taskContent)
                     
                     reply.send({
@@ -183,6 +186,24 @@ async function startApp() {
 
             } catch (error) {
                 console.error(error)
+            }
+        })
+
+        app.put("/api/updatetask", {}, async (request, reply) => {
+            try {
+                // get Task Id and completion status from user
+                const taskId = request.body.taskId;
+                const isCompleted = request.body.isCompleted;
+
+                if (taskId != null && isCompleted != null) {
+                    const updatedTask = await updateTask(taskId, isCompleted)
+
+                    reply.send({
+                        updatedTask
+                    })
+                }
+            } catch (e) {
+                console.error(e)
             }
         })
 

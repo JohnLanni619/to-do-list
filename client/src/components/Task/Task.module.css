@@ -2,9 +2,22 @@
 
 .task {
     width: min(90%, 60ch);
+    position: relative;
+    display: flex;
+    align-items: center;
     box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.75);
     -webkit-box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.75);
     -moz-box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.75);
+}
+
+.task input {
+    position: absolute;
+    left: -20px;
+    cursor: pointer;
+}
+
+.task:has(>input:checked) {
+    text-decoration: line-through;
 }
 
 .task ~hr {
