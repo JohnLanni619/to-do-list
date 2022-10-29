@@ -62,13 +62,17 @@ export default function Register () {
             password
         }
 
-        console.log('values',values)
-
-        await fetch('/api/register', {
+        const response = await fetch('/api/register', {
             method: "POST",
             body: JSON.stringify(values),
             headers: { "Content-type": "application/json; charset=UTF-8"}
         })
+
+        const responseData = await response.json();
+        console.log(responseData)
+        if (responseData.data.status === 'SUCCESS') {
+          window.location.replace('/');
+        }
         
       } catch (error) {
         console.error(error)
@@ -79,7 +83,6 @@ export default function Register () {
   }
 
   function validateEmail (e) {
-    // const format = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     const format = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
     const success = document.querySelectorAll('.success')
     const errorMessage = document.getElementById('email-error')
