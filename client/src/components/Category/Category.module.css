@@ -1,0 +1,175 @@
+@import '../../vars.css';
+
+.bubble::after {
+    content: '';
+    border-top-left-radius: 50% 100%;
+    border-top-right-radius: 50% 100%;
+    position: absolute;
+    bottom: 0;
+    z-index: -1;
+    width: 100%;
+    background-color: #0f0f10;
+    height: 85%;
+}
+
+.content-container {
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.content-container h1 {
+    margin: 1rem;
+}
+
+.container {
+    padding: 3em;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2em;
+    width: min(90%, 1400px);
+}
+
+.column {
+    border-radius: .3em;
+    box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1);
+    min-height: 500px;
+    width: 300px;
+    position: relative;
+    margin-inline: auto;
+    background-color: white;
+}
+
+.column .header {
+    background-color: var(--primary);
+}
+
+.column h2 {
+    text-align: center;
+    color: white;
+    padding-block: 0.5rem;
+    margin-inline: 2rem;
+}
+
+.column_icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+    padding: 0.75rem;
+    color: white;
+}
+
+.column p {
+    margin: 0.5rem;
+    padding: 0.5rem;
+}
+
+.options_container {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    right: -5.5rem;
+    top: -2rem;
+    color: white;
+}
+
+.options_container > * {
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.options_container span:first-child {
+    background-color: var(--secondary);
+}
+
+.options_container span > svg {pointer-events: none;}
+
+.options_container span:last-child {
+    background-color: darkred;
+}
+
+.task-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+    padding-inline: 0.5rem;
+}
+
+.task-container h3 {
+    padding: 1rem;
+}
+
+.modal-close-button {
+    border: none;
+    background: transparent;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.modal-close-button > * {
+    color: #777;
+    font-size: larger;
+    pointer-events: none;
+}
+
+.add-form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 1.25rem;
+}
+
+.add-form > * {
+    padding: 1rem 2rem;
+}
+
+.add-form > div:first-of-type {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+}
+
+.add-form input {
+    padding: 4px;
+}
+
+.add-form > div:last-of-type,
+.add-task-form div:last-of-type {
+    background-color: #1112;
+    width: 100%;
+}
+
+.add-task-form > div {
+    display: flex;
+    justify-content: center;
+}
+
+.add-task-form div:first-child,
+.add-task-form div:last-child {
+    padding: 1rem;
+    align-items: flex-end;
+}
+.add-task-form div:nth-child(2) {
+    margin-inline: 4rem;
+    margin-block-end: 1rem;
+}
+.add-task-form textarea {
+    resize: none;
+    font-size: 1.25rem;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+}
+
+.modal-icon {
+    font-size: 2rem;
+    color: var(--secondary);
+}

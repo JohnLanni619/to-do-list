@@ -6,6 +6,8 @@ import {
     faTrash
 } from '@fortawesome/free-solid-svg-icons'
 
+// Add in animation or some type of pop up that happens when you complete a task
+
 export default function Task({taskData, categoryId, sendNotification, triggerRender}) {
     async function handleCheck(e) {
         const parent = e.target.parentNode;
@@ -39,7 +41,7 @@ export default function Task({taskData, categoryId, sendNotification, triggerRen
         const optionsContainer = e.target.nextElementSibling;
         optionsContainer.classList.toggle('hidden');
     
-        const otherContainers = document.querySelectorAll(`[class^="Task_options_container"]`)
+        const otherContainers = document.querySelectorAll(`[class*="_options_container"]`)
         otherContainers.forEach(container => {
             if (!container.classList.contains('hidden') && container !== optionsContainer) {
                 container.classList.toggle('hidden');

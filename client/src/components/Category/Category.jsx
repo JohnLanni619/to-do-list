@@ -1,14 +1,16 @@
 import { useState, useEffect, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  faXmark,
   faClipboardList,
   faTimesCircle,
-  faCheck,  
-  faPlus
+  faCheck,
+  faEllipsisVertical,
+  faTrash,
+  faSquarePlus
 } from '@fortawesome/free-solid-svg-icons'
-import Notification from './Notification/Notification'
-import Task from './Task/Task'
+import styles from './Category.module.css'
+import Notification from '../Notification/Notification'
+import Task from '../Task/Task'
 
 export default function Category () {
   const [userCategories, setUserCategories] = useState([])
@@ -16,21 +18,23 @@ export default function Category () {
   const [errorText, setErrorText] = useState('')
   const [notificationTitle, setNotificationTitle] = useState('')
   const [notificationContent, setNotificationContent] = useState('')
-  const [categoryId, setCategoryId] = useState('');
+  const [categoryId, setCategoryId] = useState('')
   const [updateCategory, setUpdateCategory] = useState('')
-  const taskInput = useRef();
+  const [loading, setLoading] = useState(false)
+  const taskInput = useRef()
 
   useEffect(() => {
-    console.log('useEffect is firing')
+    setLoading(true);
     // get userID from cookies
     async function getCategories () {
       const res = await fetch('/api/getcategories')
       const data = await res.json()
 
       setUserCategories(data.data)
+
+      setLoading(false)
     }
     getCategories()
-
   }, [updateCategory])
 
   function sendNotification (title, content) {
@@ -104,7 +108,9 @@ export default function Category () {
   async function handleTaskSubmit (e) {
     e.preventDefault()
 
-    const taskContent = taskInput.current.value;
+    console.log(e)
+
+    const taskContent = taskInput.current.value
     const categoryId = e.target.getAttribute('data-attr-cid')
 
     const post_data = {
@@ -120,7 +126,7 @@ export default function Category () {
       body: JSON.stringify(post_data)
     })
 
-    const responseData = await response.json();
+    const responseData = await response.json()
 
     // Changing state variable to trigger re-render of Category component
     if (updateCategory === 'true') {
@@ -130,13 +136,12 @@ export default function Category () {
     }
 
     // Clear form and close modal on submit
-    taskInput.current.value = '';
+    taskInput.current.value = ''
     const modal = document.getElementById('add-task')
     modal.close()
-
   }
 
-  function triggerRender() {
+  function triggerRender () {
     if (updateCategory === 'true') {
       setUpdateCategory('very true')
     } else {
@@ -163,8 +168,10 @@ export default function Category () {
     })
 
     const newData = await response.json()
-    triggerRender();
+    triggerRender()
     sendNotification(newData.title, newData.body)
+    // hide options container
+    console.log(e.target.parentNode.classList.toggle('hidden'))
   }
 
   function showModal () {
@@ -172,10 +179,24 @@ export default function Category () {
     modal.showModal()
   }
 
+  function showOptions(e) {
+    const optionsContainer = e.target.parentNode.nextElementSibling;
+
+    optionsContainer.classList.toggle('hidden')
+
+    const allOptionContainers = document.querySelectorAll(`[class*="_options_container"]`);
+    allOptionContainers.forEach(container => {
+      if (!container.classList.contains('hidden') && container !== optionsContainer) {
+        container.classList.toggle('hidden')
+      }
+    })
+
+  }
+
   return (
     <>
-      <div className='content-container'>
-        {userCategories.length === 0 && (
+      <div className={`${styles['content-container']} ${styles.bubble}`}>
+        {loading === false &&   userCategories.length === 0 &&  (
           <h1>Click Add Category button to get started!</h1>
         )}
         <button className='category-button' onClick={showModal}>
@@ -183,7 +204,7 @@ export default function Category () {
         </button>
         <dialog id='add-form'>
           <button
-            className='modal-close-button'
+            className={styles['modal-close-button']}
             onClick={() => {
               const modal = document.getElementById('add-form')
               modal.close()
@@ -191,9 +212,12 @@ export default function Category () {
           >
             <FontAwesomeIcon icon={faTimesCircle} />
           </button>
-          <form className='add-form'>
+          <form className={styles['add-form']}>
             <div>
-              <FontAwesomeIcon className='modal-icon' icon={faClipboardList} />
+              <FontAwesomeIcon
+                className={styles['modal-icon']}
+                icon={faClipboardList}
+              />
               <h2>New Category</h2>
             </div>
             <div>
@@ -216,10 +240,10 @@ export default function Category () {
             </div>
           </form>
         </dialog>
-        <section className='container'>
+        <section className={styles.container}>
           <dialog id='add-task'>
             <button
-              className='modal-close-button'
+              className={styles['modal-close-button']}
               onClick={() => {
                 const modal = document.getElementById('add-task')
                 modal.close()
@@ -227,9 +251,12 @@ export default function Category () {
             >
               <FontAwesomeIcon icon={faTimesCircle} />
             </button>
-            <form className='add-task-form'>
+            <form className={styles['add-task-form']}>
               <div>
-                <FontAwesomeIcon className='modal-icon' icon={faCheck} />
+                <FontAwesomeIcon
+                  className={styles['modal-icon']}
+                  icon={faCheck}
+                />
                 <h2>New Task</h2>
               </div>
               <div>
@@ -258,38 +285,49 @@ export default function Category () {
           </dialog>
           {userCategories.map(category => {
             return (
-              <div className='column' key={category._id}>
-                <button
-                  className='delete-button'
-                  type='submit'
-                  onClick={e => handleDelete(e)}
-                  data-key={category._id}
-                >
-                  <FontAwesomeIcon className='delete-icon' icon={faXmark} />
-                </button>
-                <div className="header">
+              <div className={styles.column} key={category._id}>
+                <div className={styles.header}>
                   <h2>{category.categoryName}</h2>
+                  <FontAwesomeIcon
+                    className={styles.column_icon}
+                    icon={faEllipsisVertical}
+                    onClick={event => showOptions(event)}
+                  />
                 </div>
-                <button
-                    className=' /*task-button*/ add-task-button'
+                <div className={`${styles.options_container} hidden`}>
+                  <span
+                    className={styles['add-task-button']}
                     data-attr-cid={category._id}
-                    onClick={(e) => {
-                      taskInput.current.value='';
+                    onClick={e => {
+                      taskInput.current.value = ''
                       const modal = document.getElementById('add-task')
                       modal.showModal()
+                      e.target.parentNode.classList.toggle('hidden')
                       setCategoryId(e.target.getAttribute('data-attr-cid'))
-                  }}
-                >
-                  <FontAwesomeIcon icon={faPlus} />
-                </button>
-                <div className='task-container'>
-                  {category.tasks?.length > 0 
-                    ? <Task taskData={category?.tasks} categoryId={category?._id} 
-                        sendNotification={sendNotification}
-                        triggerRender={triggerRender}
-                      /> 
-                    : <h3>Click on plus button to add a task!</h3>
-                  }
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faSquarePlus} /> Add
+                  </span>
+                  <span
+                    className='delete-button'
+                    type='submit'
+                    onClick={e => handleDelete(e)}
+                    data-key={category._id}
+                  >
+                    <FontAwesomeIcon icon={faTrash} /> Delete
+                  </span>
+                </div>
+                <div className={styles['task-container']}>
+                  {category.tasks?.length > 0 ? (
+                    <Task
+                      taskData={category?.tasks}
+                      categoryId={category?._id}
+                      sendNotification={sendNotification}
+                      triggerRender={triggerRender}
+                    />
+                  ) : (
+                    <h3>Click on plus button to add a task!</h3>
+                  )}
                 </div>
               </div>
             )
