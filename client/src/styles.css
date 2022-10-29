@@ -244,7 +244,7 @@ li {
     margin-inline: auto;
 }
 
-.column div:first-of-type {
+.column .header {
     background-color: var(--primary);
 }
 
@@ -264,6 +264,7 @@ li {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 1rem;
 }
 
 .task-container h3 {
@@ -376,6 +377,10 @@ dialog {
     pointer-events: none;
     font-size: 1.25rem;
     color: green;
+}
+
+path {
+    pointer-events: none;
 }
 
 /* Create add task button that is on the opposite side of the container of the delete button, but has similar styling to remain consistency */

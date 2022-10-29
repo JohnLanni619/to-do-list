@@ -136,6 +136,14 @@ export default function Category () {
 
   }
 
+  function triggerRender() {
+    if (updateCategory === 'true') {
+      setUpdateCategory('very true')
+    } else {
+      setUpdateCategory('true')
+    }
+  }
+
   async function handleDelete (e) {
     e.preventDefault()
     // get category id
@@ -155,14 +163,7 @@ export default function Category () {
     })
 
     const newData = await response.json()
-
-    // setUserCategories(filtered)
-    if (updateCategory === 'true') {
-      setUpdateCategory('very true')
-    } else {
-      setUpdateCategory('true')
-    }
-
+    triggerRender();
     sendNotification(newData.title, newData.body)
   }
 
@@ -266,7 +267,7 @@ export default function Category () {
                 >
                   <FontAwesomeIcon className='delete-icon' icon={faXmark} />
                 </button>
-                <div>
+                <div className="header">
                   <h2>{category.categoryName}</h2>
                 </div>
                 <button
@@ -282,7 +283,13 @@ export default function Category () {
                   <FontAwesomeIcon icon={faPlus} />
                 </button>
                 <div className='task-container'>
-                  {category.tasks?.length > 0 ? <Task taskData={category?.tasks}/> : <h3>Click on plus button to add a task!</h3>}
+                  {category.tasks?.length > 0 
+                    ? <Task taskData={category?.tasks} categoryId={category?._id} 
+                        sendNotification={sendNotification}
+                        triggerRender={triggerRender}
+                      /> 
+                    : <h3>Click on plus button to add a task!</h3>
+                  }
                 </div>
               </div>
             )

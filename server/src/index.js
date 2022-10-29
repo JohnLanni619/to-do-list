@@ -14,6 +14,7 @@ import { createCategory } from './categories/createcategory.js';
 import { deleteCategory } from './categories/deletecategory.js';
 import { createTask } from './tasks/createtask.js';
 import { updateTask } from './tasks/updatetask.js';
+import { deleteTask } from './tasks/deletetask.js';
 
 // ESM specific features
 const __filename = fileURLToPath(import.meta.url);
@@ -172,8 +173,6 @@ async function startApp() {
                 // Get Category id and task content from user input
                 const categoryId = request.body.categoryId;
                 const taskContent = request.body.taskContent;
-
-                console.log(categoryId, taskContent)
                 
                 if (categoryId != null && taskContent != null) {
                     const createdTask = await createTask(categoryId, taskContent)
@@ -194,9 +193,10 @@ async function startApp() {
                 // get Task Id and completion status from user
                 const taskId = request.body.taskId;
                 const isCompleted = request.body.isCompleted;
+                const taskContent = request.body.taskContent;
 
                 if (taskId != null && isCompleted != null) {
-                    const updatedTask = await updateTask(taskId, isCompleted)
+                    const updatedTask = await updateTask(taskId, isCompleted, taskContent)
 
                     reply.send({
                         updatedTask
@@ -204,6 +204,26 @@ async function startApp() {
                 }
             } catch (e) {
                 console.error(e)
+            }
+        })
+
+        app.delete("/api/deletetask", {}, async (request, reply) => {
+            try {
+                // Task Id to select task to delete
+                const taskId = request.body.taskId;
+                // Category Id to remove deleted task from tasks array on Category model
+                const categoryId = request.body.categoryId;
+
+                const operation = await deleteTask(taskId, categoryId)
+
+                reply.send({
+                    taskId: operation,
+                    title: 'Success!',
+                    body: `Task with id of ${operation} has been deleted!`
+                })
+
+            } catch (error) {
+                console.error(error)
             }
         })
 
