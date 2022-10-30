@@ -214,6 +214,14 @@ path {
     pointer-events: none;
 }
 
+.hide {
+    display: none;
+}
+
+.drag-over {
+    outline: dashed 5px var(--accent);
+}
+
 /* Test Page */
 
 .test-container {

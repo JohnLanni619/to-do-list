@@ -8,6 +8,7 @@
     box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.75);
     -webkit-box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.75);
     -moz-box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.75);
+    cursor: pointer;
 }
 
 .task p {
@@ -48,6 +49,7 @@
     color: white;
     box-shadow: 0 0 4px black;
 }
+
 
 .options_container > * {
     padding: 0.5rem;

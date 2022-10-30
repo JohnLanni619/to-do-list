@@ -57,6 +57,11 @@ export default function Task({taskData, categoryId, sendNotification, triggerRen
         }
         const editField = e.target.parentNode.previousElementSibling.previousElementSibling;
         editField.setAttribute("contenteditable","true")
+        if (editField.style.pointerEvents === 'none') {
+            editField.style.pointerEvents = 'all';
+            editField.style.cursor = 'text';
+        }
+        editField.parentNode.setAttribute('draggable', 'false')
         editField.focus()
     }
     
@@ -94,6 +99,10 @@ export default function Task({taskData, categoryId, sendNotification, triggerRen
                 }) 
             }
         }
+
+        // make parent div draggable again
+        e.target.parentNode.setAttribute('draggable', 'true')
+        e.target.style.pointerEvents = 'none';
     
     }
     
@@ -127,6 +136,43 @@ export default function Task({taskData, categoryId, sendNotification, triggerRen
         e.target.parentNode.classList.toggle('hidden')
     }
 
+    function handleMouseEnter() {
+        const addButtons = document.querySelectorAll(`[class*="Category_add-task-button"]`)
+        addButtons.forEach( button => {
+            const style = getComputedStyle(button);
+
+            if (style.opacity !== 0) {
+                button.style.opacity = 0;
+            }
+
+        })
+
+    }
+
+    function handleMouseLeave() {
+        const addButtons = document.querySelectorAll(`[class*="Category_add-task-button"]`)
+        addButtons.forEach( button => {
+            if (button.getAttribute('style')) {
+                button.removeAttribute('style');
+            }
+
+        })
+
+    }
+
+    function dragStart (e) {
+        e.dataTransfer.setData('text/plain', e.target.id)
+        setTimeout(() => {
+          e.target.classList.add('hide')
+        }, 0)
+    }
+
+    function dragEnd(e) {
+        if (e.target.classList.contains('hide')) {
+            e.target.classList.toggle('hide')
+        }
+    }
+
     return (
         <>
             {taskData.map(task => {
@@ -136,29 +182,44 @@ export default function Task({taskData, categoryId, sendNotification, triggerRen
                             key={task._id} 
                             data-attr-tid={task._id}
                             data-attr-cid={categoryId}
-                            className={styles.task}
+                            className={`${styles.task} task-container`}
+                            draggable = "true"
+                            onDragStart={event => dragStart(event)}
+                            onDragEnd={event => dragEnd(event)}
+                            id={task._id}
                         >
                             <input 
                                 onChange={event => handleCheck(event)} 
                                 type="checkbox" name="is-completed" id="task-status"
                                 defaultChecked={task.isCompleted}
+                                draggable = "false"
                             />
-                            <p onBlur={event => handleFocusLoss(event)}>{task.taskContent}</p>
+                            <p 
+                                onBlur={event => handleFocusLoss(event)} 
+                                draggable="false"
+                                style={{pointerEvents:'none'}}
+                            
+                            >{task.taskContent}</p>
                             <FontAwesomeIcon 
                                 className={styles.task_icon} 
                                 icon={faEllipsisVertical}
                                 onClick={event => showOptions(event)}
+                                draggable="false"
                             />
-                            <div className={`${styles.options_container} hidden`}>
+                            <div 
+                                draggable = "false"
+                                className={`${styles.options_container} hidden`}
+                                onMouseOver={handleMouseEnter}
+                                onMouseLeave={handleMouseLeave}
+                            >
                                 <span onClick={event => handleEdit(event)}> <FontAwesomeIcon icon={faPencil} /> Edit </span>
                                 <span onClick={event => handleDelete(event)}> <FontAwesomeIcon icon={faTrash} /> Delete </span>
                             </div>
                         </div>
+                            {/* <hr draggable="false" /> */}
 
-                        <hr />
 
                     </>
-                    
                 )
             })} 
         </>

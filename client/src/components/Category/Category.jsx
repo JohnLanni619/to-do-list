@@ -24,7 +24,7 @@ export default function Category () {
   const taskInput = useRef()
 
   useEffect(() => {
-    setLoading(true);
+    setLoading(true)
     // get userID from cookies
     async function getCategories () {
       const res = await fetch('/api/getcategories')
@@ -170,8 +170,6 @@ export default function Category () {
     const newData = await response.json()
     triggerRender()
     sendNotification(newData.title, newData.body)
-    // hide options container
-    console.log(e.target.parentNode.classList.toggle('hidden'))
   }
 
   function showModal () {
@@ -179,24 +177,111 @@ export default function Category () {
     modal.showModal()
   }
 
-  function showOptions(e) {
-    const optionsContainer = e.target.parentNode.nextElementSibling;
+  function showOptions (e) {
+    const optionsContainer = e.target.parentNode.nextElementSibling
 
     optionsContainer.classList.toggle('hidden')
 
-    const allOptionContainers = document.querySelectorAll(`[class*="_options_container"]`);
+    const allOptionContainers = document.querySelectorAll(
+      `[class*="_options_container"]`
+    )
     allOptionContainers.forEach(container => {
-      if (!container.classList.contains('hidden') && container !== optionsContainer) {
+      if (
+        !container.classList.contains('hidden') &&
+        container !== optionsContainer
+      ) {
         container.classList.toggle('hidden')
       }
     })
+  }
 
+  // Drag Event Start
+
+  function dragEnter (e) {
+    e.preventDefault()
+    if (
+      e.target.nodeName === 'DIV' &&
+      e.target.classList.contains('task-container')
+    ) {
+      e.target.classList.add('drag-over')
+    }
+  }
+
+  function dragOver (e) {
+    e.preventDefault()
+
+    if (
+      e.target.nodeName === 'DIV' &&
+      e.target.classList.contains('task-container')
+    ) {
+      e.target.classList.add('drag-over')
+    }
+  }
+
+  function dragLeave (e) {
+    e.target.classList.remove('drag-over')
+  }
+
+  async function drop (e) {
+    e.target.classList.remove('drag-over')
+
+    // get the draggable element
+    const id = e.dataTransfer.getData('text/plain')
+    const draggable = document.getElementById(id)
+
+    // only append if it's a div with a class of Task_task
+    if (
+      e.target.nodeName === 'DIV' &&
+      e.target.classList.contains('task-container')
+    ) {
+      e.target.parentNode.insertBefore(draggable, e.target)
+    }
+
+    // display the draggable element
+    draggable.classList.remove('hide')
+
+    // Get category id
+    const categoryContainer = draggable.parentNode
+    const originalCategoryId = draggable.getAttribute('data-attr-cid')
+    const destinationCategoryId = categoryContainer.getAttribute(
+      'data-attr-cid'
+    )
+    const targetTaskId = draggable.getAttribute('id')
+
+    // Get all task ids of category
+    const taskIds = []
+    categoryContainer.childNodes.forEach(task => {
+      if (task.getAttribute('data-attr-tid') != null) {
+        taskIds.push(task.getAttribute('data-attr-tid'))
+      }
+    })
+
+    const post_data = {
+      originalCategoryId,
+      destinationCategoryId,
+      targetTaskId,
+      taskIds
+    }
+
+    // Make fetch request to endpoint to update current category's task list with new task order
+    const response = await fetch('/api/updatecategory', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(post_data)
+    })
+
+    await response.json();
+
+    // change data-attr-cid to on draggable element to match parent container
+    draggable.setAttribute('data-attr-cid', destinationCategoryId);
   }
 
   return (
     <>
       <div className={`${styles['content-container']} ${styles.bubble}`}>
-        {loading === false &&   userCategories.length === 0 &&  (
+        {loading === false && userCategories.length === 0 && (
           <h1>Click Add Category button to get started!</h1>
         )}
         <button className='category-button' onClick={showModal}>
@@ -296,19 +381,6 @@ export default function Category () {
                 </div>
                 <div className={`${styles.options_container} hidden`}>
                   <span
-                    className={styles['add-task-button']}
-                    data-attr-cid={category._id}
-                    onClick={e => {
-                      taskInput.current.value = ''
-                      const modal = document.getElementById('add-task')
-                      modal.showModal()
-                      e.target.parentNode.classList.toggle('hidden')
-                      setCategoryId(e.target.getAttribute('data-attr-cid'))
-                    }}
-                  >
-                    <FontAwesomeIcon icon={faSquarePlus} /> Add
-                  </span>
-                  <span
                     className='delete-button'
                     type='submit'
                     onClick={e => handleDelete(e)}
@@ -317,17 +389,32 @@ export default function Category () {
                     <FontAwesomeIcon icon={faTrash} /> Delete
                   </span>
                 </div>
-                <div className={styles['task-container']}>
-                  {category.tasks?.length > 0 ? (
-                    <Task
-                      taskData={category?.tasks}
-                      categoryId={category?._id}
-                      sendNotification={sendNotification}
-                      triggerRender={triggerRender}
-                    />
-                  ) : (
-                    <h3>Click on plus button to add a task!</h3>
-                  )}
+                <div
+                  className={styles['task-container']}
+                  onDragEnter={event => dragEnter(event)}
+                  onDragOver={event => dragOver(event)}
+                  onDragLeave={event => dragLeave(event)}
+                  onDrop={event => drop(event)}
+                  data-attr-cid={category?._id}
+                >
+                  <Task
+                    taskData={category?.tasks}
+                    categoryId={category?._id}
+                    sendNotification={sendNotification}
+                    triggerRender={triggerRender}
+                  />
+                  <span
+                    className={styles['add-task-button']}
+                    data-attr-cid={category._id}
+                    onClick={e => {
+                      taskInput.current.value = ''
+                      const modal = document.getElementById('add-task')
+                      modal.showModal()
+                      setCategoryId(e.target.getAttribute('data-attr-cid'))
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faSquarePlus} />
+                  </span>
                 </div>
               </div>
             )

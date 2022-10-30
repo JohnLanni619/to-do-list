@@ -12,6 +12,7 @@ import { logUserOut } from './accounts/loguserout.js';
 import { getUserFromCookies } from './accounts/user.js';
 import { createCategory } from './categories/createcategory.js';
 import { deleteCategory } from './categories/deletecategory.js';
+import { updateCategory } from './categories/updatecategory.js';
 import { createTask } from './tasks/createtask.js';
 import { updateTask } from './tasks/updatetask.js';
 import { deleteTask } from './tasks/deletetask.js';
@@ -123,7 +124,7 @@ async function startApp() {
                 // get userId from cookies
                 const user = await getUserFromCookies(request,reply)
 
-                const categories = user.categories;
+                const categories = user?.categories;
 
                 if (categories) {
                     reply.send({
@@ -165,6 +166,28 @@ async function startApp() {
 
             } catch (error) {
                 console.error(error)
+            }
+        })
+
+        app.put("/api/updatecategory", {}, async (request, reply) => {
+            try {
+                // get new category id updated taskIds, and original category id from user
+
+                const values = {
+                    originalCategoryId: request.body.originalCategoryId,
+                    destinationCategoryId: request.body.destinationCategoryId,
+                    targetTaskId: request.body.targetTaskId,
+                    taskIds: request.body.taskIds
+                }
+    
+                const updatedCategories = await updateCategory(values)
+
+                reply.send({
+                    updatedCategories
+                })
+
+            } catch (e) {
+                console.error(e)
             }
         })
 
