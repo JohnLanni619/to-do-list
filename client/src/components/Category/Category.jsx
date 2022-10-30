@@ -75,8 +75,6 @@ export default function Category () {
         body: JSON.stringify(data)
       })
 
-      // const newData = await response.json()
-
       // Updating state variable to trigger re-render of Category component
       if (updateCategory === 'true') {
         setUpdateCategory('very true')
@@ -171,6 +169,8 @@ export default function Category () {
   function showModal () {
     const modal = document.getElementById('add-form')
     modal.showModal()
+    const categoryInput = document.getElementById('category-input')
+    categoryInput.focus()
   }
 
   function showOptions (e) {
@@ -280,6 +280,7 @@ export default function Category () {
 
     // change data-attr-cid to on draggable element to match parent container
     draggable.setAttribute('data-attr-cid', destinationCategoryId);
+
   }
 
   return (
