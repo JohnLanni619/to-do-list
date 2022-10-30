@@ -11,7 +11,10 @@ export async function updateCategory ({
   if (originalCategoryId !== destinationCategoryId) {
     //   update original container by pulling out target task id from original category
     const originalFilter = { _id: originalCategoryId }
-    const originalUpdate = { $pull: { tasks: targetTaskId } }
+    const originalUpdate = { 
+      $pull: { tasks: targetTaskId },
+      $set: { updatedAt: Date.now() } 
+    }
 
     let updatedOriginalCategory = await Category.findOneAndUpdate(
       originalFilter,
@@ -23,7 +26,7 @@ export async function updateCategory ({
 
     // Update destination container with new array of task ids
     const destinationFilter = { _id: destinationCategoryId }
-    const destinationUpdate = { $set: { tasks: taskIds } }
+    const destinationUpdate = { $set: { tasks: taskIds, updatedAt: Date.now() } }
 
     let updatedDestinationCategory = await Category.findOneAndUpdate(
       destinationFilter,
@@ -35,7 +38,12 @@ export async function updateCategory ({
 
     // update task with categoryId of destination category
     const taskFilter = { _id: targetTaskId }
-    const taskUpdate = { categoryId: destinationCategoryId };
+    const taskUpdate = { 
+      $set: {
+        categoryId: destinationCategoryId ,
+        updatedAt: Date.now()
+      }
+    };
 
     let updatedTask = await Task.findOneAndUpdate(
       taskFilter,
@@ -53,7 +61,8 @@ export async function updateCategory ({
   } else {
     // originalCategoryId, taskIds
     const filter = { _id: originalCategoryId }
-    const update = { $set: { tasks: taskIds } }
+    const update = { 
+      $set: { tasks: taskIds, updatedAt: Date.now() } }
 
     let updatedCategory = await Category.findOneAndUpdate(filter, update, {
       new: true

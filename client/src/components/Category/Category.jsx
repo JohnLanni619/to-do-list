@@ -67,7 +67,7 @@ export default function Category () {
     }
 
     if (userInput.length > 0) {
-      const response = await fetch('/api/category', {
+      await fetch('/api/category', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -75,7 +75,7 @@ export default function Category () {
         body: JSON.stringify(data)
       })
 
-      const newData = await response.json()
+      // const newData = await response.json()
 
       // Updating state variable to trigger re-render of Category component
       if (updateCategory === 'true') {
@@ -108,8 +108,6 @@ export default function Category () {
   async function handleTaskSubmit (e) {
     e.preventDefault()
 
-    console.log(e)
-
     const taskContent = taskInput.current.value
     const categoryId = e.target.getAttribute('data-attr-cid')
 
@@ -118,15 +116,13 @@ export default function Category () {
       categoryId
     }
 
-    const response = await fetch('/api/createtask', {
+    await fetch('/api/createtask', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(post_data)
     })
-
-    const responseData = await response.json()
 
     // Changing state variable to trigger re-render of Category component
     if (updateCategory === 'true') {
@@ -200,8 +196,9 @@ export default function Category () {
   function dragEnter (e) {
     e.preventDefault()
     if (
-      e.target.nodeName === 'DIV' &&
-      e.target.classList.contains('task-container')
+      (e.target.nodeName === 'DIV' &&
+      e.target.classList.contains('task')) 
+      || (e.target.classList.contains('task-container'))
     ) {
       e.target.classList.add('drag-over')
     }
@@ -232,9 +229,16 @@ export default function Category () {
     // only append if it's a div with a class of Task_task
     if (
       e.target.nodeName === 'DIV' &&
-      e.target.classList.contains('task-container')
+      e.target.classList.contains('task')
     ) {
       e.target.parentNode.insertBefore(draggable, e.target)
+    }
+
+    if (
+      e.target.nodeName === 'DIV' &&
+      e.target.classList.contains('task-container')
+    ) {
+      e.target.insertBefore(draggable, e.target.lastElementChild)
     }
 
     // display the draggable element
@@ -390,7 +394,7 @@ export default function Category () {
                   </span>
                 </div>
                 <div
-                  className={styles['task-container']}
+                  className={`${styles['task-container']} task-container`}
                   onDragEnter={event => dragEnter(event)}
                   onDragOver={event => dragOver(event)}
                   onDragLeave={event => dragLeave(event)}
@@ -411,6 +415,9 @@ export default function Category () {
                       const modal = document.getElementById('add-task')
                       modal.showModal()
                       setCategoryId(e.target.getAttribute('data-attr-cid'))
+                      // focus on textarea
+                      const textArea = document.getElementById('task-input');
+                      textArea.focus();
                     }}
                   >
                     <FontAwesomeIcon icon={faSquarePlus} />

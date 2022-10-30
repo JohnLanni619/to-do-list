@@ -182,7 +182,7 @@ export default function Task({taskData, categoryId, sendNotification, triggerRen
                             key={task._id} 
                             data-attr-tid={task._id}
                             data-attr-cid={categoryId}
-                            className={`${styles.task} task-container`}
+                            className={`${styles.task} task`}
                             draggable = "true"
                             onDragStart={event => dragStart(event)}
                             onDragEnd={event => dragEnd(event)}
