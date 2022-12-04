@@ -1,29 +1,34 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Nav from '../components/Nav'
+import Footer from '../components/Footer'
 import Category from '../components/Category/Category'
 import '../styles.css'
 
 function App () {
+  const [ isLoggedIn, setIsLoggedIn ] = useState(false)
 
   useEffect( () => {
-        
-    // Check if user is logged in.
-    /* async function getUser() {
-        const response = await fetch('/api/test')
-        const data = await response.json();
-        
-        // If user is not logged in, redirect them to the login page
-        if (!data?.data?.email) {
-            window.location.replace('/login')
-        }
+
+    // check if user is logged in
+    async function getUser() {
+      const request = await fetch('api/getuser')
+      const response = await request.json();
+      if (response?.data?.email?.address.length > 0) {
+        setIsLoggedIn(true)
+      } else {
+        setIsLoggedIn(false)
+      }
     }
 
-    getUser(); */
+    getUser();
 })
   return (
     <>
-      <Nav />
-      <Category />
+      <div className="layout">
+        <Nav isLoggedIn={isLoggedIn} />
+        <Category />
+        <Footer />
+      </div>
     </>
   )
 }

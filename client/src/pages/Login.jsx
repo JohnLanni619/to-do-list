@@ -56,7 +56,7 @@ export default function Login() {
 
     return (
         <div className="background">
-                <div className="login-container">
+                <form className="login-container">
                     <h2>Login</h2>
                     <div className="input-container">
                         <label htmlFor='email'>Email Address</label>
@@ -75,7 +75,7 @@ export default function Login() {
                         <p>Don't have an account?</p>
                         <p> Click <b className='modal-link' onClick={openModal}>Here</b> to signup</p>
                     </div>
-                </div>
+                </form>
                 <Register />
         </div>
     )

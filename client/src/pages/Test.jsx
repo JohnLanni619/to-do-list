@@ -28,7 +28,9 @@ export default function Test() {
     console.log(input)
   }
   const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+  // eslint-disable-next-line
   const filtered = array.filter(function(value, index, arr) {
+    // eslint-disable-next-line
     if (value != 1) {
       return value
     }
