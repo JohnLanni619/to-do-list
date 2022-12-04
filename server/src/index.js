@@ -22,21 +22,18 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = fastify();
+const PORT = process.env.PORT || 3001;
 
-const buildPath = path.join(__dirname,'../../client/build')
+const buildPath = path.join(__dirname,'../../client/dist')
 
 async function startApp() {
     try {
         app.register(fastifyCookie, {
-            secret: 'kaskdl;asdpkokopqwdko;qwdkl;asd'
+            secret: process.env.SECRET
         })
 
-        // app.register(fastifyStatic, {
-        //     root: buildPath
-        // })
-
         app.register(fastifyStatic, {
-            root: path.join(__dirname, "public")
+            root: buildPath
         })
 
         app.post("/api/register", {}, async (request, reply) => {
@@ -272,8 +269,8 @@ async function startApp() {
             }
         })
 
-        await app.listen({port: 3001})
-        console.log(`🚀 Server Listening at port 3001`)
+        await app.listen({port: PORT})
+        console.log(`🚀 Server Listening at port ${PORT}`)
     } catch (error) {
         console.error(error);
     }
