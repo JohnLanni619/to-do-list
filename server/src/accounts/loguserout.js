@@ -1,7 +1,5 @@
 import jwt from 'jsonwebtoken'
 
-const JWTSignature = 'masjdpcpjsioadyunasidonhas'
-
 export async function logUserOut(request, reply) {
     try {
         const { Session } = await import("../models/session.js")
@@ -9,7 +7,7 @@ export async function logUserOut(request, reply) {
         if (request?.cookies?.refreshToken) {
             const { refreshToken } = request.cookies
             // Decode refresh token
-            const { sessionToken } = jwt.verify(refreshToken,JWTSignature)
+            const { sessionToken } = jwt.verify(refreshToken,process.env.JWT_SIGNATURE)
             // Delete session from database
             const currentSession = await Session.deleteOne({sessionToken})
         }

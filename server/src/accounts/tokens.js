@@ -1,18 +1,16 @@
 import jwt from "jsonwebtoken";
 
-const JWTSignature = 'masjdpcpjsioadyunasidonhas'
-
 export async function createTokens(sessionToken, userId) {
     try {
         // Create Refresh Token
         const refreshToken = jwt.sign({
             sessionToken
-        }, JWTSignature)
+        }, process.env.JWT_SIGNATURE)
         // Create Access Token
         const accessToken = jwt.sign({
             sessionToken,
             userId
-        }, JWTSignature)
+        }, process.env.JWT_SIGNATURE)
         // Return Refresh Token & Access Token
         return {refreshToken, accessToken}
     } catch (error) {
