@@ -18,19 +18,19 @@ async function handleSubmit(e) {
     const values = {email,password}
 
     try {
-        await fetch('/api/authorize', {
+        const response = await fetch('/api/authorize', {
             method: "POST",
             body: JSON.stringify(values),
             headers: { "Content-type": "application/json; charset=UTF-8"}
-        }).then( response => {
-            if (response.status === 200) {
-                window.location.replace(response.url)
-            }
+        });
 
-            if (response.status === 400) {
-                errorMessage.textContent = 'Email and password combination are not correct'
-            }
-        })
+        console.log(response)
+        if (response.status === 200) {
+            window.location.replace("/home")
+
+        } else {
+            errorMessage.textContent = 'Email and password combination are not correct'
+        }
 
     } catch (error) {
         console.error(error)

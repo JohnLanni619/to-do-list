@@ -19,8 +19,8 @@ export default function Nav({ isLoggedIn }) {
             <div className="nav-container">
                 <h1>To Do List</h1>
                 <nav>
-                    <Link to='/home'>Home</Link>
-                    <Link to='/profile'>Profile</Link>
+                    {/* <Link to='/home'>Home</Link> */}
+                    {/* <Link to='/profile'>Profile</Link> */}
                     {isLoggedIn===true ?
                     <button onClick={logout}>Logout</button> :
                     <button onClick={ () => window.location.replace('/')}>Login</button>

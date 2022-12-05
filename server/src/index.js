@@ -36,6 +36,10 @@ async function startApp() {
             root: buildPath
         })
 
+        app.get('/home', function (req, reply) {
+            reply.sendFile('index.html') // serving path.join(__dirname, 'public', 'myHtml.html') directly
+        })
+
         app.post("/api/register", {}, async (request, reply) => {
             try {
                 const userId = await registerUser(request.body.email, request.body.password)
@@ -60,7 +64,7 @@ async function startApp() {
 
                 if (isAuthorized) {
                     await logUserIn(userId, request, reply)
-                    reply.redirect('/').send({
+                    reply.send({
                         data: {
                             status: "SUCCESS",
                             userId
