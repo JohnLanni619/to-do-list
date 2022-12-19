@@ -60,13 +60,13 @@ export async function refreshTokens(sessionToken, userId, reply) {
         const refreshExpires = now.setDate(now.getDate() + 30)
         reply.setCookie('refreshToken', refreshToken, {
             path: "/",
-            domain: "listtodo.tk",
+            domain: process.env.DOMAIN,
             httpOnly: true,
             expires: refreshExpires
         })
         .setCookie('accessToken',accessToken, {
             path: "/",
-            domain: "listtodo.tk",
+            domain: process.env.DOMAIN,
             httpOnly: true
         })
     } catch (error) {
