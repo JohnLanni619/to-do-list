@@ -12,7 +12,7 @@ export async function logUserOut(request, reply) {
             const currentSession = await Session.deleteOne({sessionToken})
         }
         // Remove Cookies
-        reply.clearCookie('refreshToken', {path: '/'}).clearCookie('accessToken', {path: '/'})
+        reply.clearCookie('refreshToken', { path: '/', domain: process.env.DOMAIN }).clearCookie('accessToken', { path: '/', domain: process.env.DOMAIN })
         
     } catch (error) {
         console.error(error)
