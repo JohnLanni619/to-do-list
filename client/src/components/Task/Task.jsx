@@ -38,7 +38,15 @@ export default function Task({taskData, categoryId, sendNotification, triggerRen
     }
     
     function showOptions(e) {
+        e.stopPropagation()
         const optionsContainer = e.target.nextElementSibling;
+
+        window.addEventListener('click', () => {
+            if (!optionsContainer.classList.contains('hidden')) {
+              optionsContainer.classList.toggle('hidden')
+            }
+          }, {once: true})
+        
         optionsContainer.classList.toggle('hidden');
     
         const otherContainers = document.querySelectorAll(`[class*="_options_container"]`)
@@ -51,10 +59,6 @@ export default function Task({taskData, categoryId, sendNotification, triggerRen
     }
     
     function handleEdit(e) {
-        const optionsContainer = e.target.parentNode;
-        if (!optionsContainer.classList.contains('hidden')) {
-            optionsContainer.classList.toggle('hidden')
-        }
         const editField = e.target.parentNode.previousElementSibling.previousElementSibling;
         editField.setAttribute("contenteditable","true")
         if (editField.style.pointerEvents === 'none') {
@@ -131,9 +135,6 @@ export default function Task({taskData, categoryId, sendNotification, triggerRen
         triggerRender()
 
         sendNotification(deletedTask.title, deletedTask.body)
-
-        // hide options-container
-        e.target.parentNode.classList.toggle('hidden')
     }
 
     function handleMouseEnter() {
@@ -175,7 +176,7 @@ export default function Task({taskData, categoryId, sendNotification, triggerRen
 
     return (
         <>
-            {taskData.map(task => {
+            {taskData.map( task => {
                 return (
                     <>
                         <div 
@@ -200,20 +201,25 @@ export default function Task({taskData, categoryId, sendNotification, triggerRen
                                 style={{pointerEvents:'none'}}
                             
                             >{task.taskContent}</p>
-                            <FontAwesomeIcon 
-                                className={styles.task_icon} 
-                                icon={faEllipsisVertical}
+                            <button 
+                                className={styles.task_button}
                                 onClick={event => showOptions(event)}
                                 draggable="false"
-                            />
+                            >
+                                <FontAwesomeIcon 
+                                    className={styles.task_icon} 
+                                    icon={faEllipsisVertical}
+                                    draggable="false"
+                                />
+                            </button>
                             <div 
                                 draggable = "false"
                                 className={`${styles.options_container} hidden`}
                                 onMouseOver={handleMouseEnter}
                                 onMouseLeave={handleMouseLeave}
                             >
-                                <span onClick={event => handleEdit(event)}> <FontAwesomeIcon icon={faPencil} /> Edit </span>
-                                <span onClick={event => handleDelete(event)}> <FontAwesomeIcon icon={faTrash} /> Delete </span>
+                                <button className='edit-button' onClick={event => handleEdit(event)}> <FontAwesomeIcon icon={faPencil} /> Edit </button>
+                                <button className='delete-button' onClick={event => handleDelete(event)}> <FontAwesomeIcon icon={faTrash} /> Delete </button>
                             </div>
                         </div>
                             {/* <hr draggable="false" /> */}

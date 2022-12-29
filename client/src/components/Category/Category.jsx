@@ -174,7 +174,14 @@ export default function Category () {
   }
 
   function showOptions (e) {
+    e.stopPropagation();
     const optionsContainer = e.target.parentNode.nextElementSibling
+    
+    window.addEventListener('click', () => {
+      if (!optionsContainer.classList.contains('hidden')) {
+        optionsContainer.classList.toggle('hidden')
+      }
+    }, {once: true})
 
     optionsContainer.classList.toggle('hidden')
 
@@ -378,21 +385,27 @@ export default function Category () {
               <div className={styles.column} key={category._id}>
                 <div className={styles.header}>
                   <h2>{category.categoryName}</h2>
-                  <FontAwesomeIcon
-                    className={styles.column_icon}
-                    icon={faEllipsisVertical}
+                  <button 
+                    className={styles.column_button}
                     onClick={event => showOptions(event)}
-                  />
+                  >
+                    <FontAwesomeIcon
+                      className={styles.column_icon}
+                      icon={faEllipsisVertical}
+                    />
+                  </button>
                 </div>
-                <div className={`${styles.options_container} hidden`}>
-                  <span
+                <div 
+                  className={`${styles.options_container} hidden`}
+                >
+                  <button
                     className='delete-button'
                     type='submit'
                     onClick={e => handleDelete(e)}
                     data-key={category._id}
                   >
                     <FontAwesomeIcon icon={faTrash} /> Delete
-                  </span>
+                  </button>
                 </div>
                 <div
                   className={`${styles['task-container']} task-container`}
@@ -408,7 +421,7 @@ export default function Category () {
                     sendNotification={sendNotification}
                     triggerRender={triggerRender}
                   />
-                  <span
+                  <button
                     className={styles['add-task-button']}
                     data-attr-cid={category._id}
                     onClick={e => {
@@ -420,9 +433,10 @@ export default function Category () {
                       const textArea = document.getElementById('task-input');
                       textArea.focus();
                     }}
+                    draggable="false"
                   >
                     <FontAwesomeIcon icon={faSquarePlus} />
-                  </span>
+                  </button>
                 </div>
               </div>
             )

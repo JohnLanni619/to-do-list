@@ -6,7 +6,7 @@
     padding: 1rem;
     margin-left: -1000px;
     transition: margin-left 400ms ease-in-out;
-    position: absolute;
+    position: fixed;
     bottom: 5rem;
     background-color: white;
     z-index: 1000;

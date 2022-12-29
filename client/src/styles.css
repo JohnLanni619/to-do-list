@@ -217,6 +217,20 @@ dialog {
     font-weight: bold;
 }
 
+.delete-button {
+    background-color: darkred;
+    color: white;
+    border: none;
+    font-size: 1rem;
+}
+
+.edit-button {
+    background-color: darkred;
+    color: white;
+    border: none;
+    font-size: 1rem;
+}
+
 .success {
     position: absolute;
     right: 6rem;

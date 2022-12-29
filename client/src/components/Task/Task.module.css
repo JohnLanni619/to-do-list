@@ -34,14 +34,24 @@
 }
 
 .task_icon {
+    font-size: 1rem;
+    color: black;
+    pointer-events: none;
+}
+
+.task_button {
+    margin-inline: 0.5rem;
+    padding: 0.5rem;
     position: absolute;
     right: 0;
     cursor: pointer;
-    padding: 0.5rem;
+    background: transparent;
+    border: none;
 }
 
 .options_container {
     position: absolute;
+    z-index: 10;
     top: -2rem;
     right: -5.5rem;
     display: flex;
@@ -56,13 +66,13 @@
     cursor: pointer;
 }
 
-.options_container span:first-child {
+.options_container button:first-child {
     background-color: var(--secondary);
 }
 
-.options_container span > svg {pointer-events: none;}
+.options_container button > svg {pointer-events: none;}
 
-.options_container span:last-child {
+.options_container button:last-child {
     background-color: darkred;
 }
 
