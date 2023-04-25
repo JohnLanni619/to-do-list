@@ -1,7 +1,7 @@
 @import '../../vars.css';
 
 .task {
-    width: min(90%, 60ch);
+    width: 100%;
     position: relative;
     display: flex;
     align-items: center;
@@ -11,14 +11,7 @@
     cursor: pointer;
 }
 
-.task p {
-    overflow-wrap: break-word;
-    max-width: calc(100% - 1rem);
-}
-
 .task input {
-    position: absolute;
-    left: -22px;
     cursor: pointer;
 }
 
@@ -40,10 +33,9 @@
 }
 
 .task_button {
-    margin-inline: 0.5rem;
-    padding: 0.5rem;
-    position: absolute;
-    right: 0;
+    margin-inline: 0.25rem;
+    margin-left: auto;
+    padding: 0.25rem;
     cursor: pointer;
     background: transparent;
     border: none;
@@ -60,10 +52,12 @@
     box-shadow: 0 0 4px black;
 }
 
-
-.options_container > * {
+.options_container > button {
     padding: 0.5rem;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
 }
 
 .options_container button:first-child {

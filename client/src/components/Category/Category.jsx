@@ -11,6 +11,7 @@ import {
 import styles from './Category.module.css'
 import Notification from '../Notification/Notification'
 import Task from '../Task/Task'
+import Search from '../Search'
 
 export default function Category () {
   const [userCategories, setUserCategories] = useState([])
@@ -296,11 +297,22 @@ export default function Category () {
         {loading === false && userCategories.length === 0 && (
           <h1>Click Add Category button to get started!</h1>
         )}
-        <button className='category-button' onClick={showModal}>
-          Add Category
-        </button>
-        <dialog id='add-form'>
-          <button
+        <div className={styles['main-options-container']}>
+          <Search />
+          <button className='category-button' onClick={showModal}>
+            Add Category
+          </button>
+        </div>
+        
+        <dialog id='add-form' className={styles['add-form-modal']}>
+          <form className={styles['add-form']}>
+            <div className={styles['form-header']}>
+              <FontAwesomeIcon
+                className={styles['modal-icon']}
+                icon={faClipboardList}
+              />
+              <h2>New Category</h2>
+              <button
             className={styles['modal-close-button']}
             onClick={() => {
               const modal = document.getElementById('add-form')
@@ -309,24 +321,18 @@ export default function Category () {
           >
             <FontAwesomeIcon icon={faTimesCircle} />
           </button>
-          <form className={styles['add-form']}>
-            <div>
-              <FontAwesomeIcon
-                className={styles['modal-icon']}
-                icon={faClipboardList}
-              />
-              <h2>New Category</h2>
             </div>
-            <div>
+            <div className='label-container'>
               <label htmlFor='category'>Category Name </label>
               <input
                 id='category-input'
                 type='text'
+                className='form-input'
                 onChange={e => setUserInput(e.target.value)}
               />
             </div>
             <p className='modal-error-message'>{errorText}</p>
-            <div>
+            <div className={styles['form-footer']}>
               <button
                 className='add-button'
                 type='submit'
@@ -337,7 +343,10 @@ export default function Category () {
             </div>
           </form>
         </dialog>
-        <section className={styles.container}>
+        <section 
+          className={styles.container}
+          id='category-container'
+        >
           <dialog id='add-task'>
             <button
               className={styles['modal-close-button']}
@@ -349,14 +358,14 @@ export default function Category () {
               <FontAwesomeIcon icon={faTimesCircle} />
             </button>
             <form className={styles['add-task-form']}>
-              <div>
+              <div className={styles['add-task-header']}>
                 <FontAwesomeIcon
                   className={styles['modal-icon']}
                   icon={faCheck}
                 />
                 <h2>New Task</h2>
               </div>
-              <div>
+              <div className={styles['add-task-content']}>
                 <textarea
                   name='task'
                   id='task-input'

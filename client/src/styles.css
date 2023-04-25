@@ -255,6 +255,17 @@ path {
     outline: dashed 5px var(--accent);
 }
 
+.label-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    width: 90%;
+}
+
+.form-input {
+    padding: 0.25rem;
+}
+
 /* Test Page */
 
 .test-container {

@@ -222,9 +222,6 @@ export default function Task({taskData, categoryId, sendNotification, triggerRen
                                 <button className='delete-button' onClick={event => handleDelete(event)}> <FontAwesomeIcon icon={faTrash} /> Delete </button>
                             </div>
                         </div>
-                            {/* <hr draggable="false" /> */}
-
-
                     </>
                 )
             })} 

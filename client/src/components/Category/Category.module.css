@@ -1,5 +1,10 @@
 @import '../../vars.css';
 
+.main-options-container {
+    display: flex;
+    gap: 1rem;
+}
+
 .content-container {
     padding-block-start: 1rem;
     display: flex;
@@ -13,18 +18,17 @@
 }
 
 .container {
-    padding: 2em;
+    padding: 1rem;
     display: flex;
     flex-wrap: wrap;
-    gap: 1em;
+    gap: 1rem;
     width: min(90%, 1400px);
 }
 
 .column {
-    border-radius: .3em;
+    border-radius: .3rem;
     box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1);
-    min-height: 500px;
-    width: 300px;
+    flex-basis: 325px;
     position: relative;
     margin-inline: auto;
     background-color: white;
@@ -59,7 +63,6 @@
 }
 
 .column p {
-    margin: 0.5rem;
     padding: 0.5rem;
 }
 
@@ -67,14 +70,14 @@
     position: absolute;
     display: flex;
     flex-direction: column;
-    right: -5.5rem;
-    top: -2rem;
+    right: 0rem;
+    top: -2.5rem;
     color: white;
     box-shadow: 0 0 4px black;
     z-index: 10;
 }
 
-.options_container > * {
+.options_container > button {
     padding: 0.5rem;
     cursor: pointer;
 }
@@ -86,7 +89,7 @@
     flex-direction: column;
     align-items: center;
     margin-top: 1rem;
-    padding-inline: 0.5rem;
+    padding-inline: 1rem;
     gap: 1rem;
 }
 
@@ -108,12 +111,12 @@
 .add-task-button {
     font-size: 1.5em;
     color: var(--accent);
-    padding-block: 0.5em;
     cursor: pointer;
     opacity: 0;
     transition: opacity 300ms ease-in-out;
     background-color: transparent;
     border: none;
+    margin-block-end: 1rem;
 }
 
 .add-task-button >svg {
@@ -124,10 +127,11 @@
     border: none;
     background: transparent;
     position: absolute;
-    right: 5px;
-    top: 5px;
+    right: 4px;
+    top: 4px;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.75rem;
+    padding: 0;
 }
 
 .modal-close-button > * {
@@ -136,31 +140,63 @@
     pointer-events: none;
 }
 
+.add-form-modal {
+    width: min(275px, 90%);
+}
+
 .add-form {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 1.25rem;
+    align-items: center;
+    gap: 1rem;
 }
 
-.add-form > * {
-    padding: 1rem 2rem;
-}
-
-.add-form > div:first-of-type {
+.form-header {
+    width: 100%;
     display: flex;
-    align-items: flex-end;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
     gap: 0.5rem;
+    padding: 1rem;
+    background-color: var(--secondary);
+    color: white;
 }
 
-.add-form input {
-    padding: 4px;
+.form-header h2 {
+    text-align: center;
+}
+
+.form-header > svg {
+    font-size: 1.5rem;
+}
+
+.form-footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
 }
 
 .add-form > div:last-of-type,
 .add-task-form div:last-of-type {
     background-color: #1112;
     width: 100%;
+}
+
+.add-task-header {
+    background-color: var(--secondary);
+    color: white;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.add-task-header h2 {
+    text-align: center;
+}
+
+.add-task-content {
+    padding: 1rem;
 }
 
 .add-task-form > div {
@@ -171,12 +207,13 @@
 .add-task-form div:first-child,
 .add-task-form div:last-child {
     padding: 1rem;
-    align-items: flex-end;
+    align-items: center;
 }
-.add-task-form div:nth-child(2) {
-    margin-inline: 4rem;
-    margin-block-end: 1rem;
+
+.add-task-form div:last-child {
+    padding: 0.5rem;
 }
+
 .add-task-form textarea {
     resize: none;
     font-size: 1.25rem;
@@ -189,5 +226,4 @@
 
 .modal-icon {
     font-size: 2rem;
-    color: var(--secondary);
 }
